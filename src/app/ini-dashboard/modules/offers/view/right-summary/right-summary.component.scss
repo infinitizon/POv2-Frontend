@@ -1,0 +1,28 @@
+.right-summary-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  .right-summary-content {
+    background-color: #fafafa;
+    width: 450px;
+    padding: 10px 10px 20px;
+    border-radius: 8px;
+  }
+
+  .right-summary-text {
+    .key {
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.005em;
+      color: #595959;
+    }
+    .value {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: 0.001em;
+      color: var(--secondary);
+    }
+  }
+}

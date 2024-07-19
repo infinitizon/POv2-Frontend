@@ -1,0 +1,162 @@
+<div mat-dialog-title class="">
+  <div class="d-flex justify-content-end">
+    <button class="close-button" [mat-dialog-close]="false">
+      <i class="ri-close-line"></i>
+    </button>
+  </div>
+
+  <div class="title gateway-header">
+    <h6 class="mb-0">Bank information</h6>
+    <p>Please provide your bank information</p>
+  </div>
+</div>
+
+<div mat-dialog-content class="gateway-wrapper mx-3" *ngIf="!container['loading']">
+
+  <div class="mt-4">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Currency <span class="text-danger">*</span></label>
+        <div class="input mt-1 ">
+          <mat-form-field appearance="outline" class="col-md-12 w-100">
+            <mat-select formControlName="currency" (selectionChange)="changeCurrency()" >
+              <mat-option *ngFor="let c of currencyData" [value]="c?.code">{{c?.name}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span *ngIf="uiErrors.currency" class="error ">{{uiErrors.currency}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group input mt-3" *ngIf="myForm.get('currency')?.value">
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>Bank Name <span class="text-danger">*</span></div>
+          </div></label
+        >
+        <ng-select
+           *ngIf="myForm.get('currency')?.value === 'NGN'"
+          [items]="container['bankName']"
+          [appendTo]="'body'"
+          labelForId="banks"
+          bindLabel="name"
+          appearance="outline"
+          class="input-select"
+          (click)="
+            commonServices.getLOVs(
+              environment.baseApiUrl + '/verifications/banks/list',
+              'bankName',
+              container,
+              { loading: 'bankNameLoading' }
+            );
+            controlChanged('bank_name')
+          "
+          notFoundText="{{ container['bankNameLoading'] || 'No items found' }}"
+          placeholder=""
+          formControlName="bank"
+        >
+        </ng-select>
+        <mat-form-field appearance="outline" class="col-md-12 w-100" *ngIf="myForm.get('currency')?.value !== 'NGN'">
+          <input
+            matInput
+            formControlName="bank"
+            name="bank"
+            type="text"
+            class=""
+            placeholder="Enter Bank Number"
+            autocomplete="off"
+            (input)="controlChanged('bank_name')"
+          />
+        </mat-form-field>
+        <span *ngIf="uiErrors.bank_name">{{ uiErrors.bank_name }}</span>
+      </div>
+
+      <div class="form-group input" *ngIf="myForm.get('currency')?.value && myForm.get('currency')?.value !== 'NGN'">
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>Account Name <span class="text-danger">*</span></div>
+          </div></label
+        >
+        <mat-form-field appearance="outline" class="col-md-12 w-100" >
+          <input
+            matInput
+            formControlName="account_name"
+            name="account_name"
+            type="text"
+            class=""
+            placeholder="Enter Account Name"
+            autocomplete="off"
+            (input)="controlChanged('account_name')"
+          />
+        </mat-form-field>
+        <span *ngIf="uiErrors.account_name">{{ uiErrors.account_name }}</span>
+      </div>
+
+      <div class="form-group mt-3" *ngIf="myForm.get('currency')?.value">
+        <div class="gateway-label d-flex justify-content-between">
+          <label>
+            <div>Account Number <span class="text-danger">*</span></div>
+          </label>
+        </div>
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100">
+            <input
+              matInput
+              formControlName="account_number"
+              name="accountNumber"
+              type="text"
+              class=""
+              placeholder="Enter Account Number"
+              maxlength="10"
+              autocomplete="off"
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+              (keyup)="myForm.get('currency')?.value !== 'NGN' ? '' : onNubanChanged()"
+            />
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span
+              class="font-weight-bolder"
+              *ngIf="!uiErrors.account_number && !container['loadingBankName']"
+              [ngClass]="
+                container['bankAccountName']?.success
+                  ? 'text-dark'
+                  : 'text-danger'
+              "
+            >
+              {{ container["bankAccountName"]?.name }}
+            </span>
+          </div>
+          <div class="error-wrapper">
+            <span *ngIf="uiErrors.account_number">{{
+              uiErrors.account_number
+            }}</span>
+          </div>
+          <mat-spinner
+            *ngIf="container['loadingBankName']"
+            [diameter]="30"
+          ></mat-spinner>
+        </div>
+      </div>
+
+      <div class="button-wrapper w-100 d-flex justify-content-end mt-5 mb-4" *ngIf="myForm.get('currency')?.value">
+        <button
+          type="submit"
+          class="submit-btn w-25"
+          [disabled]="container['submitting']"
+        >
+          <span
+            class="d-flex justify-content-center align-items-center w-100 text-light"
+            >Save
+            <app-loader2 *ngIf="container['submitting']"></app-loader2>
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="container['loading']">
+  <app-loader></app-loader>
+</div>

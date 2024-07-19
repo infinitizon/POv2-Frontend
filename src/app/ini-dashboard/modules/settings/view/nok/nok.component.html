@@ -1,0 +1,169 @@
+<div class="mt-4">
+  <form   [formGroup]="personalForm"  >
+    <div class="row">
+      <div>
+        <div class="create-subscriber-header">
+          <h6 class="mb-0">Next of kin information</h6>
+          <p>Please provide more information</p>
+        </div>
+        <div class="d-flex justify-content-between column-gap-sm">
+          <div class="form-group col-md-6">
+            <label
+              ><div class="gateway-label d-flex justify-content-between">
+                <div>Next of kin name</div>
+              </div></label
+            >
+            <div class="input mt-1">
+              <mat-form-field appearance="outline" class="col-md-12 w-100">
+                <input
+                  autocomplete="off"
+                  matInput
+                  name="name"
+                  type="text"
+                  class=""
+                  placeholder=""
+                  formControlName="name"
+                  [mask]="mask"
+                  [validation]="false"
+                  [patterns]="customPatterns"
+                  [dropSpecialCharacters]="true"
+                  (input)="controlChanged('name')"
+                />
+              </mat-form-field>
+              <div class="error-wrapper">
+                <span class="error" *ngIf="uiErrors.name != ''">{{
+                  uiErrors.name
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label
+              ><div class="gateway-label d-flex justify-content-between">
+                <div>Next of kin relationship</div>
+              </div></label
+            >
+            <div class="input mt-1">
+              <mat-form-field
+                appearance="outline"
+                class="col-md-12 w-100 input"
+
+              >
+                <mat-select formControlName="relationship"   (selectionChange)="controlChanged('relationship')">
+                  <mat-option *ngFor="let r of relationships" [value]="r.code">
+                    {{ r.name }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+              <div class="error-wrapper">
+                <span class="error" *ngIf="uiErrors.relationship != ''">{{
+                  uiErrors.relationship
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between column-gap-sm mt-4">
+          <div class="form-group col-md-6">
+            <label
+              ><div class="gateway-label d-flex justify-content-between">
+                <div>Next of kin email</div>
+              </div></label
+            >
+            <div class="input mt-1">
+              <mat-form-field appearance="outline" class="col-md-12 w-100">
+                <input
+                  autocomplete="off"
+                  matInput
+                  name="email"
+                  type="email"
+                  class=""
+                  placeholder=""
+                  formControlName="email"
+                  (input)="controlChanged('email')"
+                />
+              </mat-form-field>
+              <div class="error-wrapper">
+                <span class="error" *ngIf="uiErrors.email != ''">{{
+                  uiErrors.email
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <label
+              ><div class="gateway-label d-flex justify-content-between">
+                <div>Next of kin phone</div>
+              </div></label
+            >
+            <div class="input mt-1">
+              <mat-form-field appearance="outline" class="col-md-12 w-100">
+                <ngx-mat-intl-tel-input
+                  [onlyCountries]="['ng']"
+                  formControlName="phone"
+                  [enablePlaceholder]="false"
+                  [enableSearch]="false"
+                  name="phone"
+                  #phone
+                  (input)="controlChanged('phone')"
+                >
+                </ngx-mat-intl-tel-input>
+              </mat-form-field>
+              <div class="error-wrapper">
+                <span class="error" *ngIf="uiErrors.phone != ''">{{
+                  uiErrors.phone
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between column-gap-sm mt-4">
+          <div class="form-group col-md-6">
+            <label
+              ><div class="gateway-label d-flex justify-content-between">
+                <div>Next of kin address</div>
+              </div></label
+            >
+            <div class="input mt-1">
+              <mat-form-field appearance="outline" class="col-md-12 w-100">
+                <input
+                  autocomplete="off"
+                  matInput
+                  name="address"
+                  type="text"
+                  class=""
+                  placeholder=""
+                  formControlName="address"
+                  (input)="controlChanged('address')"
+                />
+              </mat-form-field>
+              <div class="error-wrapper">
+                <span class="error" *ngIf="uiErrors.address != ''">{{
+                  uiErrors.address
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-wrapper d-flex justify-content-end mt-1 mb-4">
+          <button
+            type="submit"
+            class="submit-btn w-25"
+            [disabled]="submitting"
+            (click)="onSubmit()"
+          >
+          <span class="d-flex justify-content-center align-items-center w-100 text-light">Update
+            <app-loader2 *ngIf="submitting"></app-loader2>
+          </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+

@@ -1,0 +1,4 @@
+<app-nok *ngIf="!container['loading']"  [nokData]="userInformation"></app-nok>
+<div *ngIf="container['loading']">
+  <app-loader></app-loader>
+</div>

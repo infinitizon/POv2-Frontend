@@ -1,0 +1,120 @@
+<div class="container-fluid">
+  <div class="outer">
+    <div class="">
+      <div class="row">
+        <div class="col-md-6 p-0 m-0 auth-first-column">
+          <app-auth-left-bar></app-auth-left-bar>
+        </div>
+        <div class="col-md-6">
+          <div class="auth-image-wrapper logo-hide mt-4">
+            <img src="/assets/logo/new-logo.png" width="200px"  alt="Primary Logo">
+          </div>
+          <div
+          class="d-flex justify-content-between   mt-5 align-items-center continue-top"
+        >
+          <div class="auth-image-wrapper">
+            <ul class="d-flex step">
+              <li class="active"></li>
+              <li ></li>
+              <li></li>
+            </ul>
+            <!-- <mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
+            <mat-progress-bar mode="determinate" value="0"></mat-progress-bar> -->
+          </div>
+          <div class="btn-wrapper">
+            <!-- <button routerLink="/auth/login" class="action-btn text-nowrap">
+              Log in
+            </button> -->
+          </div>
+        </div>
+          <div class="d-flex justify-content-md-center mt-5">
+            <div class="auth-c1-wrapper col-md-10 col-12 col-sm-12">
+              <div class="auth-header">
+                <div class="title">
+                  <h3>Create Account</h3>
+                  <span>Have an Account Already? <a class="a-link" routerLink="/auth/login">Login</a></span>
+                </div>
+              </div>
+              <div class="auth-body mt-5">
+                <div class="auth-form-wrapper">
+                  <form [formGroup]="signupForm" [autocomplete]="'off'">
+                    <div class="form-group">
+                      <label>
+                        <div class="d-flex justify-content-between">
+                              <p class="m-0">BVN</p>
+                              <!-- <a class="m-0 need-bvn pointer" (click)="showPop = true">Why we need your BVN?</a> -->
+                        </div>
+                      </label>
+                      <!-- <div *ngIf="showPop" id="popup1" class="overlay">
+                        <div class="popup">
+                          <h2>Here i am</h2>
+                          <a class="close pointer" (click)="showPop = false">&times;</a>
+                          <div class="content">
+                            Thank to pop me out of that button, but now i'm done so you can close this window.
+                          </div>
+                        </div>
+                      </div> -->
+                      <div class="input mt-1" [ngClass]="{'inputShow': showPop}">
+                        <mat-form-field   appearance="outline" class="col-md-12 w-100">
+                          <input autocomplete="off" matInput name="bvn" type="text" class="" placeholder=""
+                            formControlName="bvn" maxlength="11" (keyup)="controlChanged('bvn')">
+                            <mat-icon matSuffix (click)="tooltip.show()">info</mat-icon>
+                            <!-- <mat-icon matSuffix (click)="container.showBVNTip = !container.showBVNTip">info</mat-icon> -->
+                            <span #tooltip="matTooltip" [matTooltipHideDelay]="2000" matTooltipPosition="below" matTooltipClass="bvntooltip"
+                            matTooltip="Why do we need your Bank Verification Number (BVN)? Your BVN is required to enable us verify your identity."></span>
+                        </mat-form-field>
+                        <div class="bvn-comment" *ngIf="uiErrors.bvn == '' && container.showBVNTip">
+                          <a>  Why do we need your Bank Verification Number (BVN)? Your BVN is required to enable us verify your
+                            identity.</a>
+                        </div>
+                        <div class="error-wrapper">
+                          <span class="error" *ngIf="uiErrors.bvn != ''">{{uiErrors.bvn }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group mt-5">
+                      <label for="dob">Date Of Birth
+                      </label>
+                      <div class="input mt-1" [ngClass]="{'inputShow': showPop}">
+                        <mat-form-field appearance="outline" class="col-md-12 w-100">
+                          <input placeholder="DD/MM/YYYY" matInput readonly [matDatepicker]="picker" formControlName="dob">
+                          <span *ngIf="uiErrors.dob">{{uiErrors.dob }}</span>
+                          <mat-datepicker-toggle matIconSuffix [for]="picker">
+                            <i  matDatepickerToggleIcon class="ri-calendar-fill"></i>
+                            <!-- <mat-icon>date_range</mat-icon> -->
+                          </mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="auth-footer-wrapper my-1 mb-5">
+                      <div class="auth-footer">
+                        <span>
+                          I acknowledge that I have read and agree to
+                          <a class="a-link" routerLink="/auth/terms">Terms and Conditions</a> and <a class="a-link" routerLink="/auth/privacy-policy">Privacy Policy.</a>
+                        </span>
+                        <!-- <span>By continuing, you agree to the? <a routerLink="/auth/terms">PrimaryOffer Platform Terms &
+                            Conditions</a> and <a>Privacy Policy.</a></span> -->
+                      </div>
+                    </div>
+                    <div class="button-wrapper mt-2">
+                      <button type="submit" (click)="onSubmit()" class="submit-btn col-md-12 w-100"
+                        [disabled]="submitting">
+                        <span class="d-flex justify-content-center align-items-center w-100">Continue
+                      <app-loader2 *ngIf="submitting"></app-loader2>
+                    </span>
+                      </button>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

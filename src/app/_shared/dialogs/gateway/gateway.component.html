@@ -1,0 +1,121 @@
+<div >
+  <div class="d-flex justify-content-end me-2 mt-2">
+    <button class="close-button" [mat-dialog-close]="false">
+      <i class="ri-close-line"></i>
+    </button>
+  </div>
+
+  <div class="title gateway-header">
+    <h2 class="mb-0 text-center">Enter amount you wish to purchase</h2>
+  </div>
+</div>
+<div mat-dialog-content class="gateway-wrapper mx-3">
+  <div class="gateway-content mt-4">
+    <form [formGroup]="gatewayForm" [autocomplete]="'off'">
+      <div class="form-group">
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>Enter amount</div>
+            <div class="units">{{(this.gatewayForm.get('amount').value / data.sharePrice   | number:'1.2-2') || 0}} Units</div>
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+            <input
+              autocomplete="off"
+              matInput
+              name="amount"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="amount"
+              (keyup)="controlChanged('amount')"
+
+              prefix="{{data.currency}} "
+              mask="separator.2" thousandSeparator=","
+              [allowNegativeNumbers]="false"
+            />
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span *ngIf="uiErrors.amount" class="error">{{
+              uiErrors.amount
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <label>Select payment</label>
+        <div class="input mt-1 ">
+          <mat-form-field appearance="outline" class="col-md-12 w-100">
+            <mat-select formControlName="payment" >
+              <mat-option *ngFor="let card of cardPayment" [value]="card"> <img src="{{card.gateway === 'paystack' ? '/assets/logo/paystack.svg' : (card.gateway === 'flutterwave' ? '/assets/logo/Flutterwave.svg' : '/assets/logo/gtsquad.png')}}" alt="{{card.gateway}} Logo" height="30" width="30"/> &nbsp; {{card.gateway | titlecase}} </mat-option>
+              <!-- <mat-option *ngIf="data.currency === 'NGN'" value="html"> <img src="/assets/logo/paystack.svg" alt="Paystack Logo" /> &nbsp; Paystack </mat-option>
+              <mat-option *ngIf="data.currency === 'NGN'" value="css"><img src="/assets/logo/Flutterwave.svg" alt="Flutterwave Logo" /> &nbsp; Flutterwave</mat-option>
+              <mat-option *ngIf="data.currency === 'NGN'" value="js"><img src="/assets/logo/Interswitch.svg" alt="Interswitch Logo" /> &nbsp; Interswitch</mat-option> -->
+              <mat-option *ngFor="let bank of bankPayment" [value]="bank"><img src="/assets/img/paywithbank.svg" alt="Pay with bank" /> &nbsp; Pay with Bank</mat-option>
+            </mat-select>
+<!--
+        <mat-select *ngIf="data.currency === 'USD'">
+          <mat-option value="bank"><img src="/assets/img/paywithbank.svg" alt="Pay with bank" /> &nbsp; Pay with Bank</mat-option>
+        </mat-select> -->
+
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span *ngIf="uiErrors.payment" class="error ">{{uiErrors.payment}}</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group input mt-3" >
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>Select Broker<span class="text-danger">*</span></div>
+          </div></label
+        >
+        <ng-select
+          [items]="container['brokerName']?.data?.brokers"
+          [appendTo]="'body'"
+          labelForId="brokerCode"
+          bindLabel="brokerName"
+          appearance="outline"
+          class="input-select"
+          (click)="
+            commonServices.getLOVs(
+              environment.baseApiUrl + '/3rd-party-services/ngx/brokers',
+              'brokerName',
+              container,
+              { loading: 'brokerNameLoading' }
+            );
+            controlChanged('broker')
+          "
+          notFoundText="{{ container['brokerNameLoading'] || 'No items found' }}"
+          placeholder=""
+          formControlName="broker"
+        >
+        </ng-select>
+        <span *ngIf="uiErrors.broker">{{ uiErrors.broker }}</span>
+      </div>
+
+      <div class="auth-footer-wrapper mt-5 mb-2">
+        <div class="auth-footer mt-3 ">
+          <mat-checkbox #terms (change)="termChecked(terms.checked)" formControlName="terms" class=""> <span>I've read and agree to the <a routerLink="/auth/terms">Terms of Service</a> for this purchase</span></mat-checkbox>
+        </div>
+      </div>
+
+      <div class="button-wrapper mt-3">
+        <button
+          type="submit"
+          class="submit-btn col-md-12 w-100"
+          [disabled]="container['submitting']"
+          (click)="pay(this.gatewayForm.get('payment').value.gateway, { gatewayId: this.gatewayForm.get('payment').value.id, gateway: this.gatewayForm.get('payment').value.gateway, subaccountId: this.gatewayForm.get('payment').value.sub_account_id })"
+        >
+        <span class="d-flex justify-content-center align-items-center w-100 text-light">  Continue purchase
+          <app-loader2 *ngIf="container['submitting']"></app-loader2>
+        </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

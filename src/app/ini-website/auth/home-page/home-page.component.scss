@@ -1,0 +1,120 @@
+.types-wrapper {
+  margin-top: 35px;
+  padding: 0px 40px;
+}
+
+.types-content-container {
+  border-radius: 16px;
+  background: var(--white-white-300, #f1f1f1);
+  padding: 38px 60px;
+
+  &.active {
+    border: 1px solid var(--green-green-900, #356252);
+  }
+
+  .text-wrapper {
+    h6 {
+      color: var(--gray-gray-600, #595959);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 27px;
+      letter-spacing: 0.018px;
+    }
+  }
+}
+
+.main-page {
+  height: 100vh !important;
+  background-color: #f4fffb;
+}
+
+.receiving-login-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 !important;
+
+  .receiving-login {
+    padding: 15px 0;
+    display: flex-end;
+    width: 80%;
+    span {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 21.78px;
+      color: #000;
+    }
+  }
+}
+
+.wrapper-card {
+  padding: 0 !important;
+  display: flex;
+  justify-content: center;
+  // height: 500px;
+  .card-content {
+    width: 80%;
+    background: #f9f9f9;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    .card-content-body {
+      h4 {
+        font-weight: 600;
+        font-size: 28px;
+        line-height: 33.89px;
+        width: 60%;
+        color: #000;
+        text-wrap: wrap;
+      }
+    }
+    // height: 500px;
+  }
+}
+
+.outer {
+  height: 70% !important;
+}
+
+@media screen and (max-width: 768px) {
+  .bg-home-image {
+    display: none;
+  }
+
+  .main-page {
+    overflow: hidden;
+  }
+
+  .wrapper-card {
+    padding: 0 !important;
+    display: flex;
+    justify-content: center;
+    // height: 500px;
+    .card-content {
+      width: 80%;
+      text-wrap: nowrap;
+
+      .card-content-body {
+        h4 {
+          font-weight: 600;
+          font-size: 28px;
+          line-height: 33.89px;
+          width: 70%;
+          color: #000;
+          text-wrap: wrap;
+        }
+      }
+    }
+  }
+
+  .receiving-login-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 0 !important;
+
+    .receiving-login {
+      padding: 15px 0;
+      display: flex-end;
+      width: 80%;
+    }
+  }
+}

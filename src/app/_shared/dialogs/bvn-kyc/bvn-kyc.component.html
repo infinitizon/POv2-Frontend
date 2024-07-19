@@ -1,0 +1,809 @@
+<!-- <div mat-dialog-title class="">
+  <div class="d-flex justify-content-end">
+    <button class="close-button" [mat-dialog-close]="false">
+      <i class="ri-close-line"></i>
+    </button>
+  </div>
+
+</div> -->
+
+<div mat-dialog-content class="gateway-wrapper mt-3 " >
+  <mat-spinner *ngIf="container.loading" [diameter]="40"></mat-spinner>
+  <mat-stepper [linear]="container['linear']" #stepper *ngIf="!container.loading" (selectionChange)="selectionChange($event)">
+    <mat-step>
+      <div>
+        <div class="col-sm-12">
+          <div class="d-flex justify-content-center">
+            <img src="/assets/logo/lock.svg" class="m-2" />
+          </div>
+          <h1 class="mt-1 mb-0 d-flex justify-content-center text-center"
+            style="color: #00868D; font-size: 18px; font-weight: 500;">Almost there! Let's help you get started</h1>
+          <!-- <small class="text-muted">We need you to add your extra information to further secure your account</small> -->
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <ul>
+          <!-- <li *ngIf="!container['currentUser']['bvn']">Date of birth</li> -->
+
+          <li *ngIf="data?.userDetails?.bvn">Verify your Bank Verification Number (BVN)</li>
+          <!-- <li *ngIf="!container['currentUser']['nin']">NIN Verification</li> -->
+          <li *ngIf="data?.userDetails?.mothersMaidenName || data?.userDetails?.placeOfBirth">
+            Mother's maiden name</li>
+          <li *ngIf="data?.userDetails?.bankAccount">Bank details</li>
+          <li *ngIf="
+          data?.userDetails?.address ||
+          data?.userDetails?.lga ||
+          data?.userDetails?.nationality ||
+          data?.userDetails?.state">Address</li>
+          <li *ngIf="data?.userDetails?.nextOfKin">Next of Kin</li>
+        </ul>
+      </div>
+      <div class="text-center stepper-actions pt-4  mb-4 px-2">
+        <button *ngIf="data.showLater" (click)="closeDialog(false)" class="cancel">I will do this later</button>
+        <button class="submit" matStepperNext>Continue</button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="firstFormGroup" *ngIf="data?.userDetails?.bvn">
+      <h1 class="d-flex justify-content-center mb-3" style="color: #00868D; font-size: 18px; font-weight: 500;">Verify your
+        BVN</h1>
+      <mat-progress-bar mode="determinate" value="25"></mat-progress-bar>
+      <div mat-dialog-content>
+        <form [formGroup]="firstFormGroup">
+          <div class="mt-3">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>BVN</label>
+                  <div class="input mt-1">
+                    <mat-form-field appearance="outline" class="col-md-12 w-100">
+                      <input autocomplete="off" matInput name="bvn" type="text" class="" placeholder=""
+                        formControlName="bvn" maxlength="11" (keyup)="controlChanged(firstFormGroup, 'bvn')">
+                    </mat-form-field>
+                    <div class="bvn-comment" *ngIf="uiErrors.bvn == ''">
+                      <span >We only need your BVN to verify your
+                        name and age.</span>
+                    </div>
+                    <div class="error-wrapper">
+                      <span class="error" *ngIf="uiErrors.bvn != ''">{{uiErrors.bvn }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-5">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="dob">Date Of Birth
+                  </label>
+                  <div class="input mt-1">
+                    <mat-form-field appearance="outline" class="col-md-12 w-100">
+                      <input placeholder="MM/DD/YYYY" matInput [matDatepicker]="picker" (dateChange)="controlChanged(firstFormGroup, 'dob')" formControlName="dob">
+                      <span *ngIf="uiErrors.dob">{{uiErrors.dob }}</span>
+                      <mat-datepicker-toggle matIconSuffix [for]="picker">
+                        <i  matDatepickerToggleIcon class="ri-calendar-fill"></i>
+                        <!-- <mat-icon>date_range</mat-icon> -->
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div class="error-wrapper">
+                      <span class="error" *ngIf="uiErrors.dob != ''">{{uiErrors.dob }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="text-center stepper-actions pt-4">
+            <button *ngIf="!container['loadingBvn']" (click)="goToBack(stepper)"  class="cancel">Back</button>
+            <!-- <button *ngIf="!container['loadingBvn']" (click)="closeDialog()" class="cancel">I will do this
+              later</button> -->
+            <button class="submit" [disabled]="container['loadingBvn']" (click)=" onSubmitBVN(stepper)">
+              <span *ngIf="!container['loadingBvn']">Save</span>
+              <span class="d-flex justify-content-center">
+                <mat-spinner style="color: #fff !important; " *ngIf="container['loadingBvn']" [diameter]="25">
+                </mat-spinner>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-step>
+
+    <!-- <mat-step [stepControl]="ninFormGroup" label="Fill out your NIN information"
+    *ngIf="!container['currentUser']['nin']">
+    <h1 class="d-flex justify-content-center mb-2" style="color: #00868D; font-size: 18px; font-weight: 500;">Complete your
+      profile</h1>
+    <mat-progress-bar mode="determinate" value="50"></mat-progress-bar>
+    <div mat-dialog-content>
+      <form [formGroup]="ninFormGroup">
+      <small class="text-muted">NIN Verification</small>
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="motherMaidenName">NIN</label>
+              <input matInput formControlName="nin" type="text" class="form-control"
+                placeholder="Your NIN"
+                (keyup)="controlChanged(ninFormGroup, 'nin')">
+              <span *ngIf="uiErrors.nin" class="text-danger">{{uiErrors.nin}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-right stepper-actions pt-4">
+          <button (click)="closeDialog()" class="cancel">I will do this later</button>
+          <button class="submit" type="submit" (click)="startNINVerification(stepper)"
+            [disabled]="container['loadingNIN']">
+            <span *ngIf="!container['loadingNIN']">Save</span>
+            <mat-spinner *ngIf="container['loadingNIN']" [diameter]="30"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-step> -->
+
+
+    <!--
+    <mat-step [stepControl]="cscsVerifyFormGroup" label="Enter Your CSCS" *ngIf="data?.requireCSCS && verifyCscs">
+      <form [formGroup]="cscsVerifyFormGroup" (ngSubmit)="onSubmitCSCSVerify(stepper)">
+        <h1>Oops, We can't find your CSCS information</h1>
+        <small class="text-muted">We would need your CSCS information to complete this transaction</small>
+        <div class="form-group row">
+          <label for="cscsNo">CSCS Number <span *ngIf="!cscsVerifyFormGroup.get('cscsNo').value" class="text-danger">*</span></label>
+          <div class="col-sm-12">
+            <input formControlName="cscsNo" class="form-control" type="text" placeholder="Enter your CSCS Number"
+              matTooltip="Your CSCS Number is needed to complete this transaction. Contact your broker if you have forgotten"
+              aria-label="Your CSCS Number is needed to complete this transaction. Contact your broker if you have forgotten" />
+            <span *ngIf="uiErrors.cscsNo" class="text-danger">{{uiErrors.cscsNo}}</span>
+            <p class="pt-2 font-weight-bolder text-dark">{{container['cscsName']}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="chn" class="col-sm-3">CHN</label>
+          <div class="col-sm-12">
+            <input formControlName="chn" class="form-control" type="text" placeholder="CHN" readonly="readonly"
+              matTooltip="Your CHN Number is needed to complete this transaction. Contact your broker if you have forgotten" />
+            <span *ngIf="uiErrors.chn" class="text-danger">{{uiErrors.chn}}</span>
+          </div>
+        </div>
+        <div class="text-right stepper-actions pt-4">
+          <button mat-button color="primary" type="button" (click)="closeDialog()">Ill do this later</button> &nbsp;
+          <button mat-stroked-button color="primary" type="button"
+            (click)="container['createCSCS'] = true;goToCreate(stepper)">I dont have, create for me</button> &nbsp;
+          <button mat-raised-button color="primary" type="submit" [disabled]="container['submittingCSCSVerify']">
+            <span *ngIf="!container['submittingCSCSVerify']">Continue</span>
+            <mat-spinner *ngIf="container['submittingCSCSVerify']" [diameter]="30"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </mat-step> -->
+
+    <mat-step [stepControl]="bankDetailsFormGroup" label="Enter Your Account Details"
+      *ngIf="data?.userDetails?.bankAccount">
+      <h1 class="d-flex justify-content-center mb-3" style="color: #00868D; font-size: 18px; font-weight: 500;">Bank Account Information</h1>
+      <mat-progress-bar mode="determinate" value="75"></mat-progress-bar>
+      <div mat-dialog-content>
+        <form [formGroup]="bankDetailsFormGroup">
+          <!-- <h1>Account Details Needed</h1>
+        <small class="text-muted">In order to create a CSCS account for you, you need to have your account
+          details</small> -->
+
+          <input autocomplete="off" name="hidden" type="text" style="display:none;">
+          <div class="row mt-2">
+            <div class="form-group">
+              <label>Currency <span class="text-danger">*</span></label>
+              <div class="input mt-1 ">
+                <mat-form-field appearance="outline" class="col-md-12 w-100">
+                  <mat-select formControlName="currency" (selectionChange)="changeCurrency()" >
+                    <mat-option *ngFor="let c of currencyData" [value]="c?.code">{{c?.name}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="error-wrapper">
+                  <span *ngIf="uiErrors.currency" class="error ">{{uiErrors.currency}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group input mt-3" *ngIf="bankDetailsFormGroup.get('currency')?.value">
+              <label
+                ><div class="gateway-label d-flex justify-content-between">
+                  <div>Bank Name <span class="text-danger">*</span></div>
+                </div></label
+              >
+              <ng-select
+                 *ngIf="bankDetailsFormGroup.get('currency')?.value === 'NGN'"
+                [items]="container['bankName']"
+                [appendTo]="'body'"
+                labelForId="banks"
+                bindLabel="name"
+                appearance="outline"
+                class="input-select"
+                (click)="
+                  commonServices.getLOVs(
+                    environment.baseApiUrl + '/verifications/banks/list',
+                    'bankName',
+                    container,
+                    { loading: 'bankNameLoading' }
+                  );
+                  controlChanged(bankDetailsFormGroup, 'bank_name')
+                "
+                notFoundText="{{ container['bankNameLoading'] || 'No items found' }}"
+                placeholder=""
+                formControlName="bank"
+              >
+              </ng-select>
+              <mat-form-field appearance="outline" class="col-md-12 w-100" *ngIf="bankDetailsFormGroup.get('currency')?.value !== 'NGN'">
+                <input
+                  matInput
+                  formControlName="bank"
+                  name="bank"
+                  type="text"
+                  class=""
+                  placeholder="Enter Bank Number"
+                  autocomplete="off"
+                  (input)="controlChanged(bankDetailsFormGroup, 'bank_name')"
+                />
+              </mat-form-field>
+              <span *ngIf="uiErrors.bank_name">{{ uiErrors.bank_name }}</span>
+            </div>
+
+            <div class="form-group input" *ngIf="bankDetailsFormGroup.get('currency')?.value && bankDetailsFormGroup.get('currency')?.value !== 'NGN'">
+              <label
+                ><div class="gateway-label d-flex justify-content-between">
+                  <div>Account Name <span class="text-danger">*</span></div>
+                </div></label
+              >
+              <mat-form-field appearance="outline" class="col-md-12 w-100" >
+                <input
+                  matInput
+                  formControlName="account_name"
+                  name="account_name"
+                  type="text"
+                  class=""
+                  placeholder="Enter Account Name"
+                  autocomplete="off"
+                  (input)="controlChanged(bankDetailsFormGroup, 'account_name')"
+                />
+              </mat-form-field>
+              <span *ngIf="uiErrors.account_name">{{ uiErrors.account_name }}</span>
+            </div>
+
+            <div class="form-group mt-3" *ngIf="bankDetailsFormGroup.get('currency')?.value">
+              <div class="gateway-label d-flex justify-content-between">
+                <label>
+                  <div>Account Number <span class="text-danger">*</span></div>
+                </label>
+              </div>
+              <div class="input mt-1">
+                <mat-form-field appearance="outline" class="col-md-12 w-100">
+                  <input
+                    matInput
+                    formControlName="account_number"
+                    name="accountNumber"
+                    type="text"
+                    class=""
+                    placeholder="Enter Account Number"
+                    maxlength="10"
+                    autocomplete="off"
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                    (keyup)="bankDetailsFormGroup.get('currency')?.value !== 'NGN' ? '' : onNubanChanged()"
+                  />
+                </mat-form-field>
+                <div class="error-wrapper">
+                  <span
+                    class="font-weight-bolder"
+                    *ngIf="!uiErrors.account_number && !container['loadingBankName']"
+                    [ngClass]="
+                      container['bankAccountName']?.success
+                        ? 'text-dark'
+                        : 'text-danger'
+                    "
+                  >
+                    {{ container["bankAccountName"]?.name }}
+                  </span>
+                </div>
+                <div class="error-wrapper">
+                  <span *ngIf="uiErrors.account_number">{{
+                    uiErrors.account_number
+                  }}</span>
+                </div>
+                <mat-spinner
+                  *ngIf="container['loadingBankName']"
+                  [diameter]="30"
+                ></mat-spinner>
+              </div>
+            </div>
+            </div>
+          <div class="text-center stepper-actions pt-4 mt-2">
+            <button *ngIf="!container['submittingBank']" (click)="goToBack(stepper)"  class="cancel">Back</button>
+            <button class="submit " type="submit" (click)="onSubmitBank(stepper)"
+              [disabled]="container['submittingBank']">
+              <span *ngIf="!container['submittingBank']">Save</span>
+              <mat-spinner *ngIf="container['submittingBank']" [diameter]="30"></mat-spinner>
+            </button>
+          </div>
+          <!-- <div class="text-right stepper-actions pt-4">
+          <button mat-button color="primary" type="button" (click)="closeDialog()">Ill do this later</button> &nbsp;
+          <button mat-raised-button color="primary" type="submit"
+            [disabled]="container['submittingBank'] || disableButton || loadingBankName">
+            <span *ngIf="!container['submittingBank']">Continue</span>
+            <mat-spinner *ngIf="container['submittingBank']" [diameter]="30"></mat-spinner>
+          </button>
+        </div> -->
+        </form>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="secondFormGroup" label="Fill out your KYC information"
+    *ngIf="data?.userDetails?.mothersMaidenName || data?.userDetails?.placeOfBirth">
+    <h1 class="d-flex justify-content-center mb-3" style="color: #00868D; font-size: 18px; font-weight: 500;">Security Information</h1>
+    <mat-progress-bar mode="determinate" value="50"></mat-progress-bar>
+    <div mat-dialog-content>
+      <form [formGroup]="secondFormGroup">
+        <!-- <h1>One more thing...we need some KYC information</h1>
+      <small class="text-muted">These are also part of our desire to ensure your safety</small> -->
+        <div class="mt-3">
+          <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Mother's Maiden Name</label>
+              <div class="input">
+                <mat-form-field appearance="outline" class="col-md-12 w-100">
+                  <input autocomplete="off" matInput name="mothersMaidenName" type="text" class="" placeholder=""
+                    formControlName="mothersMaidenName" (keyup)="controlChanged(secondFormGroup, 'mothersMaidenName')">
+                </mat-form-field>
+                <div class="error-wrapper">
+                  <span *ngIf="uiErrors.mothersMaidenName" class="error ">{{uiErrors.mothersMaidenName}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="row mt-1">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Place of Birth</label>
+              <div class="input mt-1 ">
+                <mat-form-field appearance="outline" class="col-md-12 w-100">
+                  <input autocomplete="off" matInput name="placeOfBirth" type="text" class="" placeholder=""
+                    formControlName="placeOfBirth" (keyup)="controlChanged(secondFormGroup, 'placeOfBirth')">
+                </mat-form-field>
+                <div class="error-wrapper">
+                  <span *ngIf="uiErrors.placeOfBirth" class="error ">{{uiErrors.placeOfBirth}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="text-center stepper-actions pt-4">
+          <button *ngIf="!container['submittingOthers']" (click)="goToBack(stepper)" class="cancel">Back</button>
+          <button class="submit" type="submit" (click)="onSubmitKYC(stepper)"
+            [disabled]="container['submittingOthers']">
+            <span *ngIf="!container['submittingOthers']">Save</span>
+            <mat-spinner *ngIf="container['submittingOthers']" [diameter]="30"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-step>
+    <!-- <mat-step *ngIf="data?.requireCSCS && cscsVerifySuccessMessage === null">
+      <div>
+        <div class="col-sm-12">
+          <div class="d-flex justify-content-center">
+            <img src="/assets/images//icons/cscs-icon.svg" class="mt-5" />
+          </div>
+          <h1 class="mt-5 mb-0 d-flex justify-content-center"
+            style="color: #202020;; font-size: 18px; font-weight: 500;">Do you have a CSCS Account?</h1>
+          <h1 class="mt-4 mb-0 d-flex justify-content-center text-center"
+            style="color: #878787; font-size: 16px; font-weight: 400;">CSCS accounts are required to trade investments
+            in Nigeria</h1>
+        </div>
+      </div>
+      <div class="text-center stepper-actions pt-4 mt-5 mb-4">
+        <button *ngIf="!data?.verify" (click)="openCscs(true, stepper)" class="cancel_v2">I have a CSCS account</button>
+        <button *ngIf="container['currentUser']['cscsRequestStatus'] !== 'requested'" class="submit v3"
+          (click)="openCscs(false, stepper)">Create CSCS</button>
+      </div>
+    </mat-step> -->
+
+    <mat-step [stepControl]="addressForm" label="Enter Your Address"
+    *ngIf="
+    data?.userDetails?.address ||
+    data?.userDetails?.lga ||
+    data?.userDetails?.nationality ||
+    data?.userDetails?.state">
+    <h1 class="d-flex justify-content-center mb-3" style="color: #00868D; font-size: 18px; font-weight: 500;">Address
+      information</h1>
+      <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+     <div mat-dialog-content class="mt-3">
+    <form [formGroup]="addressForm">
+      <!-- <h1>Oops, We can't find your CSCS information</h1>
+      <small class="text-muted">We would need your CSCS information to complete this transaction</small> -->
+
+    <div class="row mt-2">
+      <div class="ps-3 form-group col-md-6 mt-2">
+        <label
+        ><div class="gateway-label d-flex justify-content-between">
+          <div>Nationality</div>
+        </div></label
+      >
+      <div class="input mt-1">
+        <mat-form-field
+        appearance="outline"
+        class="col-md-12 w-100 input"
+
+      >
+        <mat-select formControlName="country"   (selectionChange)="controlChanged(addressForm, 'country')" >
+          <mat-option *ngFor="let c of appContext?.countries" [value]="c"> {{c.country}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+        <div class="error-wrapper">
+          <span class="error" *ngIf="uiErrors.country != ''">{{uiErrors.country }}</span>
+        </div>
+      </div>
+      </div>
+      <div class="pe-3 col-md-6 form-group mt-2">
+        <label
+        ><div class="gateway-label d-flex justify-content-between">
+          <div>State</div>
+        </div></label
+      >
+      <div class="input mt-1">
+        <mat-form-field
+        appearance="outline"
+        class="col-md-12 w-100 input"
+
+      >
+        <mat-select formControlName="state"  (selectionChange)="controlChanged(addressForm, 'state')" >
+          <mat-option *ngFor="let s of addressForm.get('country')?.value?.states" [value]="s"> {{s.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+        <div class="error-wrapper">
+          <span class="error" *ngIf="uiErrors.state != ''">{{uiErrors.state }}</span>
+        </div>
+      </div>
+      </div>
+      </div>
+
+      <div class="row">
+        <div class="ps-3 form-group col-md-6 mt-2">
+          <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>City</div>
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100">
+            <input
+              autocomplete="off"
+              matInput
+              name="city"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="city"
+              (input)="controlChanged(addressForm, 'city')"
+            />
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span class="error" *ngIf="uiErrors.city != ''">{{uiErrors.city }}</span>
+          </div>
+        </div>
+        </div>
+
+      <div class="pe-3 form-group col-md-6 mt-2">
+        <label
+        ><div class="gateway-label d-flex justify-content-between">
+          <div>LGA</div>
+        </div></label
+      >
+      <div class="input mt-1">
+        <mat-form-field appearance="outline" class="col-md-12 w-100">
+          <input
+            autocomplete="off"
+            matInput
+            name="lga"
+            type="text"
+            class=""
+            placeholder=""
+            formControlName="lga"
+            (input)="controlChanged(addressForm, 'lga')"
+          />
+        </mat-form-field>
+        <div class="error-wrapper">
+          <span class="error" *ngIf="uiErrors.lga != ''">{{uiErrors.lga }}</span>
+        </div>
+      </div>
+      </div>
+
+
+      </div>
+
+      <div class="row">
+      <div class="col-md-6 form-group mt-2">
+        <label
+        ><div class="gateway-label d-flex justify-content-between">
+          <div>Address</div>
+        </div></label
+      >
+      <div class="input mt-1">
+        <mat-form-field appearance="outline" class="col-md-12 w-100">
+          <input
+            autocomplete="off"
+            matInput
+            name="address1"
+            type="text"
+            class=""
+            placeholder=""
+            formControlName="address1"
+            (input)="controlChanged(addressForm, 'address1')"
+          />
+        </mat-form-field>
+        <div class="error-wrapper">
+          <span class="error" *ngIf="uiErrors.address1 != ''">{{uiErrors.address1 }}</span>
+        </div>
+      </div>
+      </div>
+      </div>
+
+
+      <div class="text-center stepper-actions pt-4 mt-3">
+        <button *ngIf="!container['submittingAddress']" (click)="goToBack(stepper)"  class="cancel">Back</button>
+        <button class="submit v2" type="submit" [disabled]="container['submittingAddress']" (click)="onSubmitAddress(stepper)">
+          <span *ngIf="!container['submittingAddress']">Save</span>
+          <span class="d-flex justify-content-center">
+            <mat-spinner *ngIf="container['submittingAddress']" [diameter]="30"></mat-spinner>
+          </span>
+        </button>
+      </div>
+    </form>
+    </div>
+  </mat-step>
+
+    <mat-step [stepControl]="nextOfKinCreateFormGroup" label="Enter Your Next of kin"
+      *ngIf="data?.userDetails?.nextOfKin">
+      <h1 class="d-flex justify-content-center mb-3" style="color: #00868D; font-size: 18px; font-weight: 500;">Next of kin
+        information</h1>
+        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+       <div mat-dialog-content class="mt-3">
+      <form [formGroup]="nextOfKinCreateFormGroup">
+        <!-- <h1>Oops, We can't find your CSCS information</h1>
+        <small class="text-muted">We would need your CSCS information to complete this transaction</small> -->
+
+      <div class="row mt-2">
+        <div class="ps-3 form-group col-md-6 mt-2">
+          <label
+            ><div class="gateway-label d-flex justify-content-between">
+              <div>Next of kin name</div>
+            </div></label
+          >
+          <div class="input mt-1">
+            <mat-form-field appearance="outline" class="col-md-12 w-100">
+              <input
+                autocomplete="off"
+                matInput
+                name="name"
+                type="text"
+                class=""
+                placeholder=""
+                formControlName="name"
+                [mask]="mask"
+                [validation]="false"
+                [patterns]="customPatterns"
+                [dropSpecialCharacters]="true"
+                (input)="controlChanged(nextOfKinCreateFormGroup, 'name')"
+              />
+            </mat-form-field>
+            <div class="error-wrapper">
+              <span class="error" *ngIf="uiErrors.name != ''">{{
+                uiErrors.name
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="pe-3 col-md-6 form-group mt-2">
+          <label
+            ><div class="gateway-label d-flex justify-content-between">
+              <div>Next of kin relationship</div>
+            </div></label
+          >
+          <div class="input mt-1">
+            <mat-form-field
+              appearance="outline"
+              class="col-md-12 w-100 input"
+
+            >
+              <mat-select formControlName="relationship"   (selectionChange)="controlChanged(nextOfKinCreateFormGroup, 'relationship')">
+                <mat-option *ngFor="let r of relationships" [value]="r.code">
+                  {{ r.name }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <div class="error-wrapper">
+              <span class="error" *ngIf="uiErrors.relationship != ''">{{
+                uiErrors.relationship
+              }}</span>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="ps-3 form-group col-md-6 mt-2">
+          <label
+            ><div class="gateway-label d-flex justify-content-between">
+              <div>Next of kin email</div>
+            </div></label
+          >
+          <div class="input mt-1">
+            <mat-form-field appearance="outline" class="col-md-12 w-100">
+              <input
+                autocomplete="off"
+                matInput
+                name="email"
+                type="email"
+                class=""
+                placeholder=""
+                formControlName="email"
+                (input)="controlChanged(nextOfKinCreateFormGroup, 'email')"
+              />
+            </mat-form-field>
+            <div class="error-wrapper">
+              <span class="error" *ngIf="uiErrors.email != ''">{{
+                uiErrors.email
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pe-3 col-md-6 form-group mt-2">
+          <label
+            ><div class="gateway-label d-flex justify-content-between">
+              <div>Next of kin phone</div>
+            </div></label
+          >
+          <div class="input mt-1">
+            <mat-form-field appearance="outline" class="col-md-12 w-100">
+              <ngx-mat-intl-tel-input
+                [onlyCountries]="['ng']"
+                formControlName="phone"
+                [enablePlaceholder]="true"
+                [enableSearch]="false"
+                name="phone"
+                #phone
+                (input)="controlChanged(nextOfKinCreateFormGroup, 'phone')"
+              >
+              </ngx-mat-intl-tel-input>
+            </mat-form-field>
+            <div class="error-wrapper">
+              <span class="error" *ngIf="uiErrors.phone != ''">{{
+                uiErrors.phone
+              }}</span>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-6 form-group mt-2">
+          <label
+            ><div class="gateway-label d-flex justify-content-between">
+              <div>Next of kin address</div>
+            </div></label
+          >
+          <div class="input mt-1">
+            <mat-form-field appearance="outline" class="col-md-12 w-100">
+              <input
+                autocomplete="off"
+                matInput
+                name="address"
+                type="text"
+                class=""
+                placeholder=""
+                formControlName="address"
+                (input)="controlChanged(nextOfKinCreateFormGroup, 'address')"
+              />
+            </mat-form-field>
+            <div class="error-wrapper">
+              <span class="error" *ngIf="uiErrors.address != ''">{{
+                uiErrors.address
+              }}</span>
+            </div>
+          </div>
+        </div>
+        </div>
+
+
+        <div class="text-center stepper-actions pt-4 mt-3">
+          <button *ngIf="!container['submittingNextOfKin']" (click)="goToBack(stepper)"  class="cancel">Back</button>
+          <button class="submit v2" type="submit" [disabled]="container['submittingNextOfKin']" (click)="onSubmitNextOfKin(stepper)">
+            <span *ngIf="!container['submittingNextOfKin']">Save</span>
+            <span class="d-flex justify-content-center">
+              <mat-spinner *ngIf="container['submittingNextOfKin']" [diameter]="30"></mat-spinner>
+            </span>
+          </button>
+        </div>
+      </form>
+      </div>
+    </mat-step>
+    <mat-step label="Completed">
+      <div>
+        <div class="col-sm-12">
+          <div class="d-flex justify-content-center">
+            <img src="/assets/logo/check-mark.svg" class="mt-5" />
+          </div>
+          <h1 class="mt-4 mb-0 d-flex justify-content-center"
+            style="color: #00868D; font-size: 18px; font-weight: 500;">Awesome! Your profile is now complete</h1>
+        </div>
+      </div>
+      <div class="text-center stepper-actions pt-4 mt-4 mb-4">
+        <button (click)="closeDialog(true)" class="submit v2">
+          <span>Close</span>
+        </button>
+      </div>
+    </mat-step>
+    <!-- <mat-step *ngIf="data?.requireCSCS && cscsVerifySuccessMessage === true">
+      <div>
+        <div class="col-sm-12">
+          <div class="d-flex justify-content-center">
+            <img src="/assets/images//icons/check-mark.svg" class="mt-5" />
+          </div>
+          <h1 class="mt-4 mb-0 text-center" style="color: #00868D; font-size: 18px; font-weight: 500;">
+            Awesome! Your CSCS account is now added to your profile</h1>
+        </div>
+      </div>
+      <div class="text-center stepper-actions pt-4 mt-4 mb-4">
+        <button class="submit v2" (click)="closeDialog()">Continue to investIN</button>
+      </div>
+    </mat-step>
+    <mat-step *ngIf="data?.requireCSCS && cscsVerifySuccessMessage === false">
+      <div>
+        <div class="col-sm-12">
+          <div class="d-flex justify-content-center">
+            <img src="/assets/images//icons/check-mark.svg" class="mt-5" />
+          </div>
+          <h1 class="mt-4 mb-0 text-center" style="color: #00868D; font-size: 18px; font-weight: 500;">CSCS account
+            creation is in progress, you would receive your CSCS account number in your registered email</h1>
+        </div>
+      </div>
+      <div class="text-center stepper-actions pt-4 mt-4 mb-4">
+        <button class="submit v2" (click)="backToInvestIn()">Continue to investIN</button>
+      </div>
+    </mat-step> -->
+  </mat-stepper>
+</div>
+
+<!-- <div mat-dialog-actions>
+  <button mat-raised-button color="primary" matStepperNext>Continue</button>
+</div> -->
+
+<!-- <div mat-dialog-actions align="end">
+  <button  mat-raised-button color="primary" (click)="goForward(stepper)" [disabled]="container['submitting']">
+    <span *ngIf="!container['submitting']">Continue</span>
+    <mat-spinner *ngIf="container['submitting']" [diameter]="30"></mat-spinner>
+  </button>
+</div> -->
+<!-- <div>
+                  <a data-toggle="collapse" href="#collapseExample" role="button" class="text-primary"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Why do we need your BVN?
+                  </a>
+                  <div class="row">
+                    <div class="collapse" id="collapseExample">
+                      <div class="card card-body text-muted">
+                        We only need to access some of your information.<br />
+                        <ul>
+                          <li>Full Name</li>
+                          <li>Phone Number</li>
+                          <li>Date of Birth</li>
+                          <li>Email Address</li>
+                        </ul>
+                        Your BVN does not give us access to your bank account or transactions<br>
+                        You can dial *565*0# to get it
+                      </div>
+                    </div>
+                  </div>
+                </div> -->

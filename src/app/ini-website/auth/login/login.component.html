@@ -1,0 +1,300 @@
+<div class="container-fluid">
+  <div class="outer">
+    <div class="middle">
+      <div class="row align-items-center">
+        <div class="col-md-6 p-0 m-0 auth-first-column">
+          <app-auth-left-bar></app-auth-left-bar>
+        </div>
+        <div class="col-md-6">
+          <!-- <div
+          class="d-flex px-5 mt-3 align-items-center continue-top"
+        >
+          <div class="auth-image-wrapper  logo-unhide col-md-8 col-12 col-sm-12">
+            <img src="/assets/logo/primary-offer-logo.svg" alt="Primary Logo">
+          </div>
+        </div> -->
+          <div class="auth-image-wrapper logo-hide mt-4">
+            <img src="/assets/logo/new-logo.png" width="200px"  alt="Primary Logo">
+          </div>
+          <div class="d-flex justify-content-md-center mt-5">
+            <div class="auth-c1-wrapper col-md-8 col-12 col-sm-12">
+              <div class="auth-header">
+                <div class="title">
+                  <h3><strong>Log in</strong></h3>
+                  <span
+                    >New to PrimaryOffer?
+                    <a class="a-link" routerLink="/auth/signup"
+                      >Create an account</a
+                    ></span
+                  >
+                </div>
+              </div>
+              <div class="auth-body mt-5">
+                <div class="auth-form-wrapper">
+                  <form [formGroup]="loginForm" [autocomplete]="'off'">
+                    <div class="form-group">
+                      <label>Email</label>
+                      <div class="input mt-1">
+                        <mat-form-field
+                          appearance="outline"
+                          class="col-md-12 w-100 input"
+                        >
+                          <input
+                            autocomplete="off"
+                            matInput
+                            name="email"
+                            type="email"
+                            class=""
+                            placeholder=""
+                            formControlName="email"
+                          />
+                        </mat-form-field>
+                        <div
+                          class="error-wrapper"
+                          *ngIf="
+                            loginForm.get('email')?.invalid &&
+                            (loginForm.get('email')?.dirty ||
+                              loginForm.get('email')?.touched)
+                          "
+                        >
+                          <label
+                            *ngIf="loginForm.get('email')?.errors?.['required']"
+                            class="error"
+                            >Email is required.</label
+                          >
+                          <label
+                            *ngIf="loginForm.get('email')?.errors?.['pattern']"
+                            class="error"
+                            >Please enter valid email.</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group mt-3">
+                      <label>Password</label>
+                      <div class="mt-1">
+                        <mat-form-field
+                          appearance="outline"
+                          class="col-md-12 w-100 input"
+                        >
+                          <input
+                            matInput
+                            id="password"
+                            name="password"
+                            type="password"
+                            class=""
+                            placeholder=""
+                            autocomplete="new-password"
+                            formControlName="password"
+                            [type]="
+                              container['fieldTextType'] ? 'text' : 'password'
+                            "
+                          />
+                          <button
+                            type="button"
+                            mat-icon-button
+                            matSuffix
+                            (click)="showEyes()"
+                            [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="container['fieldTextType']"
+                          >
+                            <i
+                              class="{{
+                                container['fieldTextType']
+                                  ? 'ri-eye-fill'
+                                  : 'ri-eye-close-fill'
+                              }}"
+                            ></i>
+                          </button>
+                        </mat-form-field>
+                        <div
+                          class="error-wrapper"
+                          *ngIf="
+                            loginForm.get('password')?.invalid &&
+                            (loginForm.get('password')?.dirty ||
+                              loginForm.get('password')?.touched)
+                          "
+                        >
+                          <label
+                            *ngIf="loginForm.get('password')?.errors?.['required']"
+                            class="error"
+                            >Password is required.</label
+                          >
+                          <label
+                            *ngIf="loginForm.get('password')?.errors?.['minlength']"
+                            class="error"
+                            >Password must be at least 6 characters long</label
+                          >
+                          <label
+                            *ngIf="loginForm.get('password')?.errors?.['oneDigit']"
+                            class="error"
+                            >Password must contain at least one digit</label
+                          >
+                          <label
+                            *ngIf="loginForm.get('password')?.errors?.['oneLowerCase']"
+                            class="error"
+                            >Password must contain at least one lowercase
+                            character</label
+                          >
+                          <label
+                            *ngIf="loginForm.get('password')?.errors?.['oneUpperCase']"
+                            class="error"
+                            >Password must contain at least one uppercase
+                            character</label
+                          >
+                          <label
+                            *ngIf="loginForm.get('password')?.errors?.['specialChar']"
+                            class="error"
+                            >Password must contain at least one special
+                            character</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="button-wrapper mt-3">
+                      <button
+                        type="submit"
+                        class="submit-btn col-md-12 w-100"
+                        [disabled]="loginForm.invalid || submitting"
+                        (click)="onSubmit()"
+                      >
+                        <span
+                          class="d-flex justify-content-center align-items-center w-100"
+                          >Log in
+                          <app-loader2 *ngIf="submitting"></app-loader2>
+                        </span>
+                      </button>
+                    </div>
+                  </form>
+                  <div class="auth-footer-wrapper">
+                    <div class="auth-footer d-flex justify-content-center mt-3">
+                      <span
+                        >Forgot your password?
+                        <a class="a-link" routerLink="/auth/forgot-password"
+                          >Reset here</a
+                        ></span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="get-in-touch-wrapper">
+                    <div class="get-in-touch w-100">
+                      <span
+                        >Need help?
+                        <a class="a-link" routerLink="/auth/get-in-touch"
+                          >Get in touch</a
+                        ></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="container">
+  <div class="outer">
+    <div class="middle">
+      <div class="row column-gap-lg align-items-center">
+        <div class="col d-md-flex justify-content-md-end  order-2 order-md-1 ">
+          <div class="auth-c1-wrapper ">
+            <div class="auth-header">
+              <div class="title">
+                <h3>Log in</h3>
+                <span>New to PrimaryOffer? <a routerLink="/auth/signup">Create an account</a></span>
+              </div>
+            </div>
+            <div class="auth-body mt-5">
+              <div class="auth-form-wrapper">
+                <form [formGroup]="loginForm" [autocomplete]="'off'">
+                  <div class="form-group ">
+                    <label>Email</label>
+                    <div class="input mt-1 ">
+                      <mat-form-field appearance="outline" class="col-md-12 w-100 input" >
+                        <input autocomplete="off" matInput name="email" type="email" class="" placeholder=""
+                          formControlName="email">
+                      </mat-form-field>
+                      <div class="error-wrapper"
+                        *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+                        <label *ngIf="loginForm.get('email')?.errors?.['required']" class="error">Email is
+                          required.</label>
+                        <label *ngIf="loginForm.get('email')?.errors?.['pattern']" class="error">Enter valid
+                          email.</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mt-3">
+                    <label>Password</label>
+                    <div class="mt-1">
+                      <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+                        <input matInput id="password" name="password" type="password" class="" placeholder=""
+                          autocomplete="new-password" formControlName="password"
+                          [type]="container['fieldTextType'] ? 'text' : 'password'">
+                        <button type="button" mat-icon-button matSuffix (click)="showEyes()"
+                          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="container['fieldTextType']">
+                          <i class="{{container['fieldTextType'] ? 'ri-eye-fill' : 'ri-eye-close-fill'}}"></i>
+                        </button>
+                      </mat-form-field>
+                      <div class="error-wrapper"
+                        *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+                        <label *ngIf="loginForm.get('password')?.errors?.['required']" class="error">Password is
+                          required.</label>
+                        <label *ngIf="loginForm.get('password')?.errors?.['minlength']" class="error">Password must be
+                          at
+                          least 6
+                          characters long</label>
+                        <label *ngIf="loginForm.get('password')?.errors?.['oneDigit']" class="error">Password must
+                          contain
+                          at least one
+                          digit</label>
+                        <label *ngIf="loginForm.get('password')?.errors?.['oneLowerCase']" class="error">Password must
+                          contain at least
+                          one lowercase character</label>
+                        <label *ngIf="loginForm.get('password')?.errors?.['oneUpperCase']" class="error">Password must
+                          contain at least
+                          one uppercase character</label>
+                        <label *ngIf="loginForm.get('password')?.errors?.['specialChar']" class="error">Password must
+                          contain at least
+                          one special character</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="button-wrapper mt-3">
+                    <button type="submit" class="submit-btn col-md-12 w-100" [disabled]="loginForm.invalid || submitting"
+                      (click)="onSubmit()">       <span class="d-flex justify-content-center align-items-center w-100">Sign in
+                        <app-loader2 *ngIf="submitting"></app-loader2>
+                      </span>
+                        </button>
+                  </div>
+                </form>
+                <div class="auth-footer-wrapper">
+                  <div class="auth-footer d-flex justify-content-center mt-3">
+                    <span>Forgot your password? <a routerLink="/auth/forgot-password">Reset here</a></span>
+                  </div>
+                </div>
+
+                <div class="get-in-touch-wrapper">
+                  <div class="get-in-touch w-100">
+                    <span>Need help? <a routerLink="/auth/get-in-touch">Get in touch</a></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col order-1 order-md-2 m-0 p-0">
+          <div class="auth-image-wrapper">
+            <img src="/assets/logo/primary-offer-logo.svg" alt="Primary Logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

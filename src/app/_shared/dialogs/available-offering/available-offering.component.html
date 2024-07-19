@@ -1,0 +1,137 @@
+<div mat-dialog-title class="">
+  <div class="d-flex justify-content-end">
+    <button class="close-button" [mat-dialog-close]="false">
+      <i class="ri-close-line"></i>
+    </button>
+  </div>
+
+  <div class="title gateway-header" >
+    <h6 class="mb-0">Search for your name</h6>
+    <!-- <p>Please see list of Available right issues and search your name to see if you are eligible.</p> -->
+  </div>
+  <!-- <div class="title gateway-header" *ngIf="data.data === 'ipos'">
+    <h3 class="mb-0 text-center" style="font-size: 30px; line-height: 40px;">IPOs Information</h3>
+    <p>Please see list of Available ipos</p>
+  </div> -->
+</div>
+<!-- <div mat-dialog-content class="gateway-wrapper mb-5 mt-2" *ngIf="data.data === 'ipos'">
+<p class="text-center my-4" style="font-size: 20px; line-height: 40px;">Please Login to access the IPOs available</p>
+</div> -->
+
+<div mat-dialog-content class="gateway-wrapper mb-5 w-100 mx-3" >
+  <!-- <div class="d-flex justify-content-start w-100 mt-2" *ngIf="!container['loading-right']">
+    <mat-chip-listbox [multiple]="false" class="" aria-label="Color selection">
+        <mat-chip-option *ngFor="let right of rightIssue"  [color]="'primary'" (click)="selectOffering(right)">{{right.Asset.name}}</mat-chip-option>
+    </mat-chip-listbox>
+  </div> -->
+<!--
+  <app-loader *ngIf="container['loading-right']"></app-loader> -->
+  <form class="col-md-12" [formGroup]="emailForm" [autocomplete]="'off'">
+  <div class="d-flex justify-content-center">
+    <div class="form-group input mt-4 col-md-12 col-sm-12 col-lg-12 col-12">
+      <label
+        ><div class="gateway-label d-flex justify-content-between">
+          <div>Please confirm that the information below is correct</div>
+        </div></label
+      >
+      <ng-select
+      class="ng-select-auth"
+      bindValue="id"
+      [(ngModel)]="searchName"
+      [ngModelOptions]="{standalone: true}"
+      [items]="items$ | async"
+      [addTag]="addTagFn"
+      [minTermLength]="minLengthTerm"
+      [loading]="customerLoading"
+      [virtualScroll]="true"
+      typeToSearchText="{{ minLengthTerm }} or more characters"
+      [typeahead]="input$"
+      placeholder="Select Customer"
+      loadingText="Please wait, while we search for your name"
+      [appendTo]="'body'"
+      (change)="getCustomerId($event)"
+      [clearable]="true"
+      (clear)="true"
+    >
+      <ng-template ng-label-tmp let-item="item">
+        <div
+          title="{{ item.firstName }} {{ item.middleName }} {{
+            item.lastName
+          }}{{ item.email ? ' - (' + item.email + ')' : ''}}"
+        >
+          {{ item.firstName }} {{ item.middleName }}
+          {{ item.lastName }}{{ item.email ? ' - (' + item.email + ')' : ''}}
+        </div>
+        <div class="text-muted">
+          CSCS: {{item.Assets[0]?.UserStock?.otherData?.cscs || 'Not available'}},   CHN: {{item.Assets[0]?.UserStock?.otherData?.chn || 'Not available'}}
+        </div>
+      </ng-template>
+      <ng-template ng-option-tmp let-item="item" let-index="index">
+        <div
+          title="{{ item.firstName }} {{ item.middleName }} {{
+            item.lastName
+          }}{{ item.email ? ' - (' + item.email + ')' : ''}}"
+        >
+          {{ item.firstName }} {{ item.middleName }}
+          {{ item.lastName }}{{ item.email ? ' - (' + item.email + ')' : ''}}
+        </div>
+        <div class="text-muted">
+          CSCS = {{item.Assets[0]?.UserStock?.otherData?.cscs || 'Not available'}},  CHN: {{item.Assets[0]?.UserStock?.otherData?.chn || 'Not available'}}
+        </div>
+      </ng-template>
+    </ng-select>
+      </div>
+    </div>
+
+    <!-- -->
+  <div class="d-flex justify-content-center" >
+    <div class="form-group input mt-4 col-md-12" *ngIf="searchName && (container['customer']?.email === null ||container['customer']?.email === undefined)" >
+      <label
+        ><div class="gateway-label d-flex justify-content-between">
+          <div>Enter your desired email</div>
+        </div></label
+      >
+      <div class="input mt-1 ">
+        <mat-form-field appearance="outline" class="col-md-12 w-100 input" >
+          <input autocomplete="off" matInput name="email" type="email" class="" placeholder=""
+            formControlName="email">
+        </mat-form-field>
+        <div class="error-wrapper"
+          *ngIf="emailForm.get('email')?.invalid && (emailForm.get('email')?.dirty || emailForm.get('email')?.touched) || (checkEmail)">
+          <label *ngIf="emailForm.get('email')?.errors?.['required']" class="error">Email is
+            required.</label>
+          <label *ngIf="emailForm.get('email')?.errors?.['pattern']" class="error">Enter valid
+            email.</label>
+        </div>
+      </div>
+      </div>
+      </div>
+</form>
+    <div class="d-flex justify-content-center mt-3">
+    <div *ngIf="searchName">
+      <p class="text-center mb-0">We will send you an OTP to verify your email</p>
+
+      <div class="auth-footer-wrapper mb-2" *ngIf="searchName && (container['customer']?.email === null ||container['customer']?.email === undefined)" >
+        <div class="auth-footer mt-3 ">
+          <mat-checkbox color="warning" #terms (change)="termChecked(terms.checked)" formControlName="terms" class="text-danger"> <span class="text-danger">I have accepted that i'm the owner of the CSCS and CHN or Phone number  </span></mat-checkbox>
+        </div>
+      </div>
+
+
+      <div class="btn-wrapper d-flex mt-4 w-100">
+        <button [disabled]="container['loading-proceed']" (click)="proceed()" class="submit-btn home">
+          <span class="d-flex justify-content-center align-items-center w-100">Proceed
+            <app-loader2 *ngIf="container['loading-proceed']"></app-loader2>
+          </span>
+
+        </button>
+      </div>
+    </div>
+    </div>
+
+
+
+
+</div>
+
+

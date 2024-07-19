@@ -1,0 +1,266 @@
+<div mat-dialog-title>
+  <div class="d-flex justify-content-end">
+  <button class="close-button" [mat-dialog-close]="false">
+    <i class="ri-close-line"></i>
+  </button>
+</div>
+
+  <div class="title gateway-header">
+    <h2 class="mb-0 text-center">Buy Rights Issue</h2>
+  </div>
+</div>
+<div mat-dialog-content class="gateway-wrapper mx-3">
+  <div class="gateway-content mt-4">
+    <form [formGroup]="gatewayForm" [autocomplete]="'off'">
+
+      <div class="form-group" >
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>{{data?.rightEntitled?.data?.data?.status === "REQUEST_OVERAGE" ? 'Maximum Available to Buy' :'Available rights to buy'}}</div>
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+            <input
+              autocomplete="off"
+              matInput
+              name="rightEntitled"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="rightEntitled"
+              (keyup)="controlChanged('rightEntitled')"
+              readonly
+              mask="separator.0" thousandSeparator=","
+              [allowNegativeNumbers]="false"
+            />
+          </mat-form-field>
+          <div class="error-wrapper">
+            <div class="units text-end" *ngIf="gatewayForm.get('purchaseOption')?.value === 'Full'">{{(this.gatewayForm.get('totalAmount').value  | currency:data.currency:'symbol-narrow') || 0}}</div>
+            <span *ngIf="uiErrors.rightEntitled" class="error">{{
+              uiErrors.rightEntitled
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group mt-3">
+        <label>Purchase option</label>
+        <div class="input mt-1 ">
+          <mat-form-field appearance="outline" class="col-md-12 w-100">
+            <mat-select formControlName="purchaseOption" (selectionChange)="checkedForPartial()">
+              <mat-option *ngFor="let option of purchaseOptionsData" [value]="option"> {{(option === 'Additional' ? option +  ' rights' : option + ' acceptance' )}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span *ngIf="uiErrors.payment" class="error ">{{uiErrors.payment}}</span>
+            <!-- <span *ngIf="gatewayForm.get('purchaseOption')?.value" class="eligible">You are eligible to buy {{(gatewayForm.get('rightEntitled')?.value | number)}} right due</span> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-group mt-3" >
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>Holdings already held</div>
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+            <input
+              autocomplete="off"
+              matInput
+              name="unitHeld"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="unitHeld"
+              (keyup)="controlChanged('unitHeld')"
+              readonly
+              mask="separator.0" thousandSeparator=","
+              [allowNegativeNumbers]="false"
+            />
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span *ngIf="uiErrors.unitHeld" class="error">{{
+              uiErrors.unitHeld
+            }}</span>
+              <span *ngIf="gatewayForm.get('purchaseOption')?.value" class="eligible">Your total rights due is {{this.data?.rightEntitled?.rightEntitledToUser  | number}}</span>
+          </div>
+        </div>
+      </div> -->
+
+
+      <!-- <div class="form-group mt-3" *ngIf="gatewayForm.get('purchaseOption')?.value === 'Full'">
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>Total Amount</div>
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+            <input
+              autocomplete="off"
+              matInput
+              name="totalAmount"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="totalAmount"
+              (keyup)="controlChanged('totalAmount')"
+              readonly
+              prefix="{{data.currency}}"
+              mask="separator.2" thousandSeparator=","
+              [allowNegativeNumbers]="false"
+            />
+          </mat-form-field>
+        </div>
+      </div> -->
+
+      <div class="form-group mt-3" *ngIf="gatewayForm.get('purchaseOption')?.value === 'Partial'" >
+        <label
+          ><div class="gateway-label">
+            <!-- <div>Number of ordinary shares accepted</div> -->
+            <div>Enter unit to purchase</div>
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+            <input
+              autocomplete="off"
+              matInput
+              name="unit"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="unit"
+              (keyup)="controlChanged('unit'); checkedForPartial();"
+
+              mask="separator.0" thousandSeparator=","
+              [allowNegativeNumbers]="false"
+            />
+          </mat-form-field>
+          <div class="error-wrapper">
+            <div class="units text-end">{{(this.gatewayForm.get('unit').value * data.sharePrice   | currency:data.currency:'symbol-narrow') || 0}}</div>
+            <span *ngIf="uiErrors.unit" class="error">{{
+              uiErrors.unit
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-group mt-3" *ngIf="gatewayForm.get('purchaseOption')?.value === 'Partial'">
+        <label
+          ><div class="gateway-label d-flex justify-content-between">
+            <div>Number of ordinary shares renounced (Optional)</div>
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+            <input
+              autocomplete="off"
+              matInput
+              name="renounced"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="renounced"
+              (keyup)="controlChanged('renounced')"
+
+              mask="separator.0" thousandSeparator=","
+              [allowNegativeNumbers]="false"
+            />
+          </mat-form-field>
+          <div class="error-wrapper">
+            <span *ngIf="uiErrors.renounced" class="error">{{
+              uiErrors.renounced
+            }}</span>
+          </div>
+        </div>
+      </div> -->
+
+
+      <div class="form-group mt-3" *ngIf="gatewayForm.get('purchaseOption')?.value === 'Additional'">
+        <label
+          ><div class="gateway-label">
+            <div>Buy additional shares (Optional)</div>
+
+          </div></label
+        >
+        <div class="input mt-1">
+          <mat-form-field appearance="outline" class="col-md-12 w-100 input">
+            <input
+              autocomplete="off"
+              matInput
+              name="additional"
+              type="text"
+              class=""
+              placeholder=""
+              formControlName="additional"
+              (keyup)="controlChanged('additional')"
+              [patterns]="customPatterns"
+              mask="separator.0" thousandSeparator=","
+
+              [allowNegativeNumbers]="false"
+            />
+          </mat-form-field>
+
+          <div class="error-wrapper">
+            <div class="units text-end">{{(this.gatewayForm.get('additional').value * data.sharePrice   | currency:data.currency:'symbol-narrow') || 0}}</div>
+            <span *ngIf="uiErrors.additional" class="error">{{
+              uiErrors.additional
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- [readonly]="this.data?.rightEntitled?.remainderToBuy > 0" -->
+
+      <!-- <div class="auth-footer-wrapper mt-5 mb-2" >
+        <div class="auth-footer mt-3 ">
+          <mat-checkbox #terms (change)="termChecked(terms.checked)" formControlName="terms" class=""> <span>I accept only the number of ordinary shares being paid for and renounce my rights to the balance of the ordinary shares allocated to me.
+            I have read and accepted the description terms and conditions <a target="_blank" href="/assets/pdf/Primary Offer Africa Terms of Use.pdf">terms and conditions</a> </span></mat-checkbox>
+        </div>
+      </div> -->
+      <div class="auth-footer-wrapper mt-5 mb-2" *ngIf="gatewayForm.get('purchaseOption')?.value">
+        <div class="auth-footer mt-3 ">
+          <mat-checkbox #terms (change)="termChecked(terms.checked)" formControlName="terms" class="">
+            <span *ngIf="gatewayForm.get('purchaseOption')?.value === 'Partial'">I accept only the number of Ordinary Shares being paid for and renounce my rights to the balance of the ordinary shares allocated to me.
+            I have read and accepted the  <a class="a-link" target="_blank" href="{{data?.ngx?.ngx?.prospectus}}">shelf prospectus, </a> <a class="a-link" target="_blank" href="{{data?.ngx?.ngx?.pricingSupplement}}"> pricing supplement</a> and <a class="a-link" target="_blank" href="{{data?.ngx?.ngx?.termSheet}}">term sheet</a>
+            of this rights issue </span>
+
+            <span *ngIf="gatewayForm.get('purchaseOption')?.value === 'Full'">
+              I have read and accepted the  <a class="a-link" target="_blank" href="{{data?.ngx?.ngx?.prospectus}}">shelf prospectus, </a> <a class="a-link" target="_blank" href="{{data?.ngx?.ngx?.pricingSupplement}}"> pricing supplement</a> and <a class="a-link" target="_blank" href="{{data?.ngx?.ngx?.termSheet}}">term sheet</a>
+              of this rights issue </span>
+
+              <span *ngIf="gatewayForm.get('purchaseOption')?.value === 'Additional'">I agree to accept the same or smaller number of additional shares in respect of which allotment may be made to me in accordance with the Provisional Allotment Letter contained in the Rights Circular.</span>
+          </mat-checkbox>
+        </div>
+      </div>
+
+      <div class="button-wrapper mt-3 mb-4">
+        <button
+          type="submit"
+          class="submit-btn col-md-12 w-100"
+          [disabled]="container['submitting']"
+          (click)="onSubmit()"
+        >
+        <span class="d-flex justify-content-center align-items-center w-100 text-light">  Continue purchase
+          <app-loader2 *ngIf="container['submitting']"></app-loader2>
+        </span>
+        </button>
+      </div>
+      <div class="button-wrapper mt-3 mb-4" *ngIf="gatewayForm.get('purchaseOption')?.value">
+        <button
+          type="submit"
+          class="action-btn col-md-12 w-100"
+          [mat-dialog-close]="false"
+        >
+        <span class="d-flex justify-content-center align-items-center w-100">  Cancel
+        </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

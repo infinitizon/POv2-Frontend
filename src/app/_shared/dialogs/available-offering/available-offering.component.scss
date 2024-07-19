@@ -1,0 +1,16 @@
+.text-muted {
+  font-size: 14px;
+}
+
+
+::ng-deep.ng-select.ng-select-single .ng-select-container {
+  height: 75px !important;
+  border-radius: 8px;
+  border: none;
+}
+
+::ng-deep.mdc-form-field {
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle;
+}

@@ -1,0 +1,303 @@
+<div class="container-fluid">
+  <div class="outer">
+    <div class="middle">
+      <div class="row">
+        <div class="col-md-6 p-0 m-0 auth-first-column">
+          <app-auth-left-bar></app-auth-left-bar>
+        </div>
+        <div class="col-md-6">
+          <div class="auth-image-wrapper logo-hide mt-4 px-3">
+            <img src="/assets/logo/new-logo.png" width="200px"  alt="Primary Logo">
+          </div>
+          <div
+            class="d-flex justify-content-between mt-5 align-items-center continue-top px-3"
+          >
+            <div class="auth-image-wrapper">
+              <ul class="d-flex step">
+                <li></li>
+                <li class="active"></li>
+                <li></li>
+              </ul>
+              <!-- <mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
+              <mat-progress-bar mode="determinate" value="0"></mat-progress-bar> -->
+            </div>
+            <div class="btn-wrapper">
+              <button routerLink="/auth/login" class="action-btn text-nowrap">
+                Log in
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-md-center mt-5">
+            <div class="auth-c1-wrapper col-md-12 col-12 col-sm-12">
+              <div class="auth-header px-3">
+                <div class="title">
+                  <h3>We have validated your BVN</h3>
+                  <span>we still need more information</span>
+                </div>
+              </div>
+              <div class="auth-body mt-3">
+                <div class="auth-form-wrapper">
+                  <form [formGroup]="signupForm" [autocomplete]="'off'">
+                    <div class="row">
+                      <div class="col-md-6 mt-4">
+                        <label>Email</label>
+                        <div class="input mt-1">
+                          <mat-form-field
+                            appearance="outline"
+                            class="w-100"
+                          >
+                            <input
+                              autocomplete="off"
+                              matInput
+                              name="email"
+                              type="email"
+                              class=""
+                              placeholder=""
+                              formControlName="email"
+                              (keyup)="controlChanged('email')"
+                            />
+                          </mat-form-field>
+                          <div class="error-wrapper">
+                            <span *ngIf="uiErrors.email" class="error">{{
+                              uiErrors.email
+                            }}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 form-group mt-4">
+                        <label>Phone number</label>
+                        <div class="input mt-1">
+                          <mat-form-field
+                            appearance="outline"
+                            class="w-100"
+                          >
+                            <ngx-mat-intl-tel-input
+                              [inputPlaceholder]="''"
+                              [onlyCountries]="['ng']"
+                              formControlName="phone"
+                              [enablePlaceholder]="true"
+                              [enableSearch]="false"
+                              name="phone"
+                              #phone
+                            >
+                            </ngx-mat-intl-tel-input>
+                          </mat-form-field>
+                          <div class="error-wrapper">
+                            <span *ngIf="uiErrors.phone" class="error">{{
+                              uiErrors.phone
+                            }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-md-6 mt-4">
+                        <label>Mother's Maiden Name</label>
+                        <div class="input mt-1">
+                          <mat-form-field
+                            appearance="outline"
+                            class="col-md-12 w-100"
+                          >
+                            <input
+                              autocomplete="off"
+                              matInput
+                              name="mothersMaidenName"
+                              type="text"
+                              class=""
+                              placeholder=""
+                              formControlName="mothersMaidenName"
+                              (keyup)="controlChanged('mothersMaidenName')"
+                            />
+                          </mat-form-field>
+                          <div class="error-wrapper">
+                            <span
+                              *ngIf="uiErrors.mothersMaidenName"
+                              class="error"
+                              >{{ uiErrors.mothersMaidenName }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 form-group mt-4">
+                        <label>Place of Birth</label>
+                        <div class="input mt-1">
+                          <mat-form-field appearance="outline" class="col-md-12 w-100">
+                            <input autocomplete="off" matInput name="placeOfBirth" type="text"
+                              class="" placeholder="" formControlName="placeOfBirth" (keyup)="controlChanged('placeOfBirth')" />
+                          </mat-form-field>
+                          <div class="error-wrapper">
+                            <span *ngIf="uiErrors.placeOfBirth" class="error">{{ uiErrors.placeOfBirth }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class=" col-md-6 form-group mt-4">
+                        <label>Password</label>
+                        <div class="input mt-1">
+                          <mat-form-field appearance="outline" class="col-md-12 w-100">
+                            <input matInput id="password" name="password" type="password" class="" placeholder="" autocomplete="new-password"
+                              formControlName="password" (keyup)="controlChanged('password')" [type]="container['fieldTextType'] ? 'text' : 'password'" />
+                            <!-- <button
+                              (click)="clearPassword('password')"
+                              *ngIf="
+                                uiErrors.password ||
+                                (signupForm.get('password')?.invalid &&
+                                  signupForm.get('confirmPassword')?.touched)
+                              "
+                              type="button"
+                              mat-icon-button
+                              matSuffix
+                            >
+                              <i class="ri-close-circle-fill"></i>
+                            </button> -->
+                            <button
+                              type="button"
+                              mat-icon-button
+                              matSuffix
+                              (click)="showEyes()"
+                              [attr.aria-label]="'Hide password'"
+                              [attr.aria-pressed]="container['fieldTextType']"
+                            >
+                              <i
+                                class="{{
+                                  container['fieldTextType']
+                                    ? 'ri-eye-fill'
+                                    : 'ri-eye-close-fill'
+                                }}"
+                              ></i>
+                            </button>
+                            <!-- <button
+                              *ngIf="
+                                !uiErrors.password &&
+                                signupForm.get('password')?.touched &&
+                                signupForm.get('password')?.valid
+                              "
+                              type="button"
+                              mat-icon-button
+                              matSuffix
+                              class="text-success"
+                            >
+                              <i class="ri-checkbox-circle-fill"></i>
+                            </button> -->
+                          </mat-form-field>
+                          <div class="error-wrapper">
+                            <span *ngIf="uiErrors.password" class="error">{{
+                              uiErrors.password
+                            }}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 form-group mt-4">
+                        <label>Confirm Password</label>
+                        <div class="input mt-1">
+                          <mat-form-field
+                            appearance="outline"
+                            class="col-md-12 w-100"
+                          >
+                            <input
+                              matInput
+                              id="confirmPassword"
+                              name="confirmPassword"
+                              type="password"
+                              class=""
+                              placeholder=""
+                              autocomplete="new-password"
+                              formControlName="confirmPassword"
+                              (keyup)="controlChanged('confirmPassword')"
+                              [type]="
+                                container['fieldTextType'] ? 'text' : 'password'
+                              "
+                            />
+                            <!-- <button
+                              (click)="clearPassword('confirmPassword')"
+                              *ngIf="
+                                uiErrors.confirmPassword ||
+                                (signupForm.get('confirmPassword')?.invalid &&
+                                  signupForm.get('confirmPassword')?.touched)
+                              "
+                              type="button"
+                              mat-icon-button
+                              matSuffix
+                            >
+                              <i class="ri-close-circle-fill"></i>
+                            </button> -->
+                            <button
+                              type="button"
+                              mat-icon-button
+                              matSuffix
+                              (click)="showEyes()"
+                              [attr.aria-label]="'Hide password'"
+                              [attr.aria-pressed]="container['fieldTextType']"
+                            >
+                              <i
+                                class="{{
+                                  container['fieldTextType']
+                                    ? 'ri-eye-fill'
+                                    : 'ri-eye-close-fill'
+                                }}"
+                              ></i>
+                            </button>
+                            <!-- <button
+                              *ngIf="
+                                !uiErrors.confirmPassword &&
+                                signupForm.get('confirmPassword')?.touched &&
+                                signupForm.get('confirmPassword')?.valid
+                              "
+                              type="button"
+                              mat-icon-button
+                              matSuffix
+                              class="text-success"
+                            >
+                              <i class="ri-checkbox-circle-fill"></i>
+                            </button> -->
+                          </mat-form-field>
+                          <div class="error-wrapper">
+                            <span
+                              *ngIf="uiErrors.confirmPassword"
+                              class="error"
+                              >{{ uiErrors.confirmPassword }}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="button-wrapper mt-4 px-3">
+                      <button
+                        (click)="confirmEmail()"
+                        type="submit"
+                        class="submit-btn col-md-12 w-100"
+                        [disabled]="submitting"
+                      >
+                        <span
+                          class="d-flex justify-content-center align-items-center w-100"
+                          >Sign up
+                          <app-loader2 *ngIf="submitting"></app-loader2>
+                        </span>
+                      </button>
+                    </div>
+                    <div class="get-in-touch-wrapper mb-5 px-3">
+                      <div class="get-in-touch w-100">
+                        <span
+                          >Need help?
+                          <a class="a-link" routerLink="/auth/get-in-touch"
+                            >Get in touch</a
+                          ></span
+                        >
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

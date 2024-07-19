@@ -1,0 +1,41 @@
+.submit {
+  // width: 85px;
+  // height: 48px;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 13px 20px;
+  margin: 3px 5px;
+
+  &.v2 {
+    // width: 179px;
+  }
+
+  &.v3 {
+    // width: 115px;
+  }
+}
+.error-wrapper {
+  color: red;
+  font-size: 12px;
+}
+
+.chn-text {
+  font-size: 12px;
+}
+
+mat-radio-button {
+  display: flex;
+  flex-direction: column;
+  margin:10px;
+}
+
+
+::ng-deep .mdc-form-field {
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+}

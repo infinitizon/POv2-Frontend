@@ -1,0 +1,108 @@
+<div mat-dialog-title>
+  <div class="d-flex justify-content-end">
+    <button class="close-button" [mat-dialog-close]="false">
+      <i class="ri-close-line"></i>
+    </button>
+  </div>
+
+  <div class="title gateway-header">
+    <h2 class="mb-0 text-center">Select a payment option</h2>
+  </div>
+</div>
+
+<div mat-dialog-content class="gateway-wrapper mx-3">
+  <div class="gateway-content">
+    <div
+    [ngClass]="{'pointer': !container['submitting']}"
+      class="partner-payment mt-2"
+      *ngFor="let card of cardPayment"
+      (click)="
+        !container['submitting']
+          ? pay('card', {
+              gatewayId: card.id,
+              gateway: card.gateway,
+              subaccountId: 1,
+              paymentMethod: 'online'
+            })
+          : ''
+      "
+    >
+      <a class="gateway" *ngIf="!container['submitting']">
+        <img
+          src="{{
+            card.gateway === 'paystack'
+              ? '/assets/logo/paystack.svg'
+              : card.gateway === 'flutterwave'
+              ? '/assets/logo/Flutterwave.svg'
+              : card.gateway === 'gtsquad'
+              ? '/assets/logo/gtsquad.png'
+              : '/assets/logo/Interswitch.svg'
+          }}"
+          alt="Gateway logo"
+          height="40"
+          width="40"
+        />
+        <span>{{ card.gateway }}</span>
+      </a>
+      <span class="">
+        <mat-spinner
+          *ngIf="container['submitting']"
+          style="
+            height: 20px;
+            width: 20px;
+            color: #000 !important;
+            padding-left: 5px;
+          "
+          [diameter]="30"
+        ></mat-spinner>
+      </span>
+      <a class="icon"><i class="ri-arrow-right-s-line"></i></a>
+    </div>
+
+  </div>
+
+  <div class="gateway-content mt-3 pointer">
+    <div
+      class="partner-payment"
+      *ngFor="let bank of bankPayment"
+      (click)="
+        !container['submitting']
+          ? pay('bank', {
+              gatewayId: null,
+              gateway: 'bank',
+              subaccountId: 1,
+              paymentMethod: 'online'
+            })
+          : ''
+      "
+    >
+      <a class="gateway" *ngIf="!container['submitting']">
+        <img
+          [src]="'/assets/img/paywithbank.svg'"
+          alt="Gateway logo"
+          height="20"
+          width="20"
+        />
+        <span>{{ bank.gateway }}</span>
+      </a>
+      <span class="d-flex justify-content-center align-items-center w-100">
+        <mat-spinner
+        *ngIf="container['submitting']"
+        style="
+          height: 20px;
+          width: 20px;
+          color: #000 !important;
+          padding-left: 5px;
+        "
+        [diameter]="30"
+      ></mat-spinner>
+      </span>
+      <a class="icon"><i class="ri-arrow-right-s-line"></i></a>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="container['cardLoading']">
+  <app-loader></app-loader>
+</div>

@@ -1,0 +1,120 @@
+<div class="container-fluid px-2 px-sm-2 px-md-4 px-lg-4 mb-5" *ngIf="summaryDetails" >
+  <div class="col-md-12 mt-2 border-top border-light pt-2">
+    <in-backbutton></in-backbutton>
+  </div>
+
+  <div class="right-summary-wrapper">
+    <div class="right-summary-content">
+      <div class="title">
+        <h2 class="text-center">Payment summary</h2>
+      </div>
+
+      <div class="logo-wrapper d-flex justify-content-center mt-4">
+        <img
+          [src]="this.summaryDetails.rightLogo"
+          alt="Offer Image"
+          height="40"
+          width="40"
+          class="rounded-circle"
+        />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <span class="value">{{summaryDetails?.assetName}}</span>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="d-flex flex-column right-summary-text">
+          <span class="key">Purchase option</span>
+          <span class="value">{{(summaryDetails?.purchaseOption === 'Additional' ? summaryDetails?.purchaseOption +  ' rights' : summaryDetails?.purchaseOption + ' acceptance' )}} </span>
+        </div>
+
+        <div class="d-flex flex-column align-items-end right-summary-text">
+          <span class="key">Offer Type</span>
+          <span class="value">{{'Rights issue'}}</span>
+        </div>
+
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="d-flex flex-column right-summary-text">
+          <span class="key">Date</span>
+          <span class="value">{{date | date}}</span>
+        </div>
+        <div class="d-flex flex-column align-items-end right-summary-text">
+          <span class="key">Share price</span>
+          <span class="value">{{
+            summaryDetails?.sharePrice | currency : summaryDetails?.currency : "symbol-narrow"
+          }}</span>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="d-flex flex-column right-summary-text" *ngIf="summaryDetails?.purchaseOption === 'Additional'">
+          <span class="key">{{'Additional shares'}} </span>
+          <span class="value">{{(summaryDetails?.additional) | number}} units</span>
+        </div>
+
+        <div class="d-flex flex-column right-summary-text" *ngIf="summaryDetails?.purchaseOption === 'Full' || summaryDetails?.purchaseOption === 'Partial'">
+          <span class="key">{{summaryDetails?.purchaseOption === 'Full' ? 'Full acceptance' : 'Shares accepted'}} </span>
+          <span class="value">{{(summaryDetails?.unit || summaryDetails?.rightEntitled) | number}} units</span>
+        </div>
+
+        <div class="d-flex flex-column align-items-end  right-summary-text">
+          <span class="key">Amount payable</span>
+          <span class="value">{{
+            summaryDetails?.totalAmount | currency : summaryDetails?.currency : "symbol-narrow"
+          }}</span>
+        </div>
+        <!-- <div class="d-flex flex-column align-items-end right-summary-text">
+          <span class="key">{{summaryDetails?.purchaseOption === 'Full' ? 'Additional ordinary shares' : 'Shares renounced'}} {{summaryDetails?.purchaseOption === 'Full' ? ( '(' + summaryDetails?.additional + ' units)') : ''}}</span>
+          <span class="value">{{ summaryDetails?.purchaseOption !== 'Full' ?  (summaryDetails?.renounced | number) :
+            (summaryDetails?.additional * summaryDetails?.sharePrice | currency : summaryDetails?.currency : "symbol-narrow" )
+          }}</span>
+        </div> -->
+      </div>
+
+      <!-- <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="d-flex flex-column  right-summary-text">
+          <span class="key">Amount payable</span>
+          <span class="value">{{
+            summaryDetails?.totalAmount | currency : summaryDetails?.currency : "symbol-narrow"
+          }}</span>
+        </div>
+      </div> -->
+
+      <div class="mt-5 mb-2">
+        <div class="auth-footer mt-3 d-flex justify-content-center">
+          <mat-checkbox #terms (change)="termChecked(terms.checked)" class="d-flex align-items-start">
+            <span *ngIf="summaryDetails?.purchaseOption === 'Partial'">I accept only the number of Ordinary Shares being paid for and renounce my rights to the balance of the ordinary shares allocated to me.
+              I have read and accepted the  <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.prospectus}}">shelf prospectus, </a> <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.pricingSupplement}}"> pricing supplement</a> and <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.termSheet}}">term sheet</a>
+              of this rights issue </span>
+
+              <span *ngIf="summaryDetails?.purchaseOption === 'Full'">
+                I have read and accepted the  <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.prospectus}}">shelf prospectus, </a> <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.pricingSupplement}}"> pricing supplement</a> and <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.termSheet}}">term sheet</a>
+                of this rights issue </span>
+
+                <span *ngIf="summaryDetails?.purchaseOption === 'Additional'">I agree to accept the same or smaller number of additional shares in respect of which allotment may be made to me in accordance with the Provisional Allotment Letter contained in the Rights Circular.</span>
+              </mat-checkbox
+          >
+        </div>
+      </div>
+
+      <div class="button-wrapper mt-3 d-flex justify-content-center px-5">
+        <button
+          type="submit"
+          class="submit-btn w-100 col-md-12"
+          [disabled]="container['submitting']"
+          (click)="pay()"
+        >
+          <span
+            class="d-flex justify-content-center align-items-center w-100 text-light"
+          >
+            Pay {{ summaryDetails?.totalAmount | currency : summaryDetails?.currency : "symbol-narrow" }}
+            <app-loader2 *ngIf="container['submitting']"></app-loader2>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,209 @@
+<mat-sidenav-container [ngClass]="{'blur': addCscs}">
+  <mat-sidenav
+    #sidenav
+    fixedInViewport="true"
+    class="side-bar"
+    [mode]="sideNavMode"
+    [opened]="sideNavOpen"
+  >
+    <div class="logo">
+      <a [routerLink]="['/app/home']">
+        <img src="/assets/logo/new-logo.png" alt="Primary Logo" width="100px"  />
+      </a>
+    </div>
+    <div class="side-bar-menu">
+      <div class="menu-section-bottom">
+        <nav>
+          <ul class="menu">
+            <li class="menu-item">
+              <a [routerLink]="['home']" routerLinkActive="current">
+                <span class="dash-menu-icon">
+                  <i class="ri-home-line"></i>
+                </span>
+                Home</a
+              >
+            </li>
+
+            <li class="menu-item">
+              <a [routerLink]="['transactions']" routerLinkActive="current">
+                <span class="dash-menu-icon">
+                  <i class="ri-arrow-up-down-line"></i>
+                </span>
+                Transactions
+              </a>
+            </li>
+            <li class="menu-item">
+              <a [routerLink]="['faq']" routerLinkActive="current">
+                <span class="dash-menu-icon">
+                  <i class="ri-bill-line"></i>
+                </span>
+                FAQ
+              </a>
+            </li>
+            <li class="menu-item">
+              <a [routerLink]="['help']" routerLinkActive="current">
+                <span class="dash-menu-icon">
+                  <i class="ri-question-line"></i>
+                </span>
+                <span>Help</span>
+              </a>
+            </li>
+          </ul>
+
+
+          <!-- <div class="get-role" *ngIf="role != 'CUSTOMER'">
+             <app-get-roles></app-get-roles>
+          </div> -->
+        </nav>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-content">
+    <!-- <mat-toolbar class="notify-toolbar" *ngIf="!this.userInformation?.firstLogin && this.userInformation?.CSCs?.length === 0">
+      <div class="d-flex justify-content-center align-items-center w-100">
+          <div class="icon"><i class="ri-information-fill"></i></div>
+          <div class="text"><span>Add your CSCS and bank account details to purchase this offer.</span></div>
+          <div class="btn"><button class="notify-btn" (click)="addDetails()">Add Details</button></div>
+      </div>
+    </mat-toolbar> -->
+    <mat-toolbar class="toolbar">
+      <mat-icon class="menu-toogle" (click)="sidenav.toggle()">menu</mat-icon>
+      <!-- (click)="sidenav.toggle()" -->
+      <div class="sidemenu-toggle">
+        <span
+          >Welcome <span>{{userInformation?.firstName | titlecase}},</span></span
+        >
+
+      </div>
+
+      <div class="spacer"></div>
+      <!--
+      <a [routerLink]="['/dashboard/support']" mat-flat-button>
+        <mat-icon>help_outline</mat-icon> Help
+      </a> -->
+      <button class="notify" [matMenuTriggerFor]="notifications">
+        <!-- <mat-icon  role="button"
+      matBadgeColor="warn">
+        notifications_none
+      </mat-icon> -->
+        <i class="ri-notification-4-line"></i>
+      </button>
+      <!-- [matBadge]="0" -->
+      <mat-menu #notifications="matMenu">
+        <cdk-virtual-scroll-viewport [itemSize]="72" minBufferPx="900" maxBufferPx="1350">
+          <h2 class="pl-4">Notifications</h2>
+          <mat-list>
+            <mat-list-item *cdkVirtualFor="let item of container['notifications']" role="button" (click)="clickedNotification(item)">
+              <img matListAvatar [src]="item.image || '/assets/images/investnaija-logo-text-white.png'">
+              <h3 matLine> {{item.title}} </h3>
+              <p matLine><span> {{ (item.body?.length>30)? (item.body | slice:0:30)+'..':(item.body)}} </span></p>
+              <span class="start-100 translate-middle p-1 bg-danger border border-light rounded-circle" *ngIf="!item.isRead"></span>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+            <div class="spinner-item" *ngIf="container['loadingNotifications']">
+              <mat-progress-spinner [mode]="'indeterminate'" [diameter]="50"></mat-progress-spinner>
+            </div>
+            <div class="spinner-item text-center" *ngIf="!container['loadingNotifications'] && container['notifications']?.length <=0">
+                  No new notifications
+            </div>
+          </mat-list>
+        </cdk-virtual-scroll-viewport>
+      </mat-menu>
+
+      <!-- <span mat-menu-item class="profile-name" [matMenuTriggerFor]="menu" disableRipple>Hi{{'Test'? ', ' + 'Testing' : ''}}</span> -->
+      <button mat-flat-button [matMenuTriggerFor]="menu" class="profile-menu">
+        <span *ngIf="true" class="profileName"
+          >{{ (userInformation?.firstName | titlecase) | slice : 0 : 1 }}{{ (userInformation?.lastName| titlecase) | slice : 0 : 1 }}</span
+        >
+        <img *ngIf="false" [src]="" alt="" />
+        <!-- <mat-icon>expand_more</mat-icon> -->
+      </button>
+      <mat-menu #menu="matMenu" class="profile-menu-dropdown">
+        <!-- <div class="cscs-wrapper d-flex justify-content-center">
+          <div class="d-flex justify-content-between">
+            <span class="px-2 cscs">CSCS Number</span>
+            <span class="px-3"
+              ><span class="cscs-number">NIL</span> &nbsp;<a class="pointer" (click)="copyCSCS()"><i
+                class="ri-file-copy-line"
+              ></i
+            ></a></span>
+          </div>
+        </div> -->
+        <a class="profile" [routerLink]="['settings']" mat-menu-item>
+          <div class="d-flex align-items-start">
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center">
+                <div class="profile-icon">
+                  <i class="ri-settings-line"></i>
+                </div>
+                <div class="d-flex align-items-start flex-column ml-4">
+                  <div class="profile-title px-4 mb-0">
+                    <h3 class="mb-0">Settings</h3>
+                  </div>
+                  <div class="profile-subtitle px-4">
+                    <span>Profile, Notification & Security</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+        <!-- <a class="profile" mat-menu-item>
+          <div class="d-flex align-items-start">
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center">
+                <div class="profile-icon">
+                  <i class="ri-gift-2-line"></i>
+                </div>
+                <div class="d-flex align-items-start flex-column ml-4">
+                  <div class="profile-title px-4 mb-0">
+                    <h3 class="mb-0">Referrals</h3>
+                  </div>
+                  <div class="profile-subtitle px-4">
+                    <span>Get 10% on every completed transaction</span>
+
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="https://primaryoffer.ng/refer/223.."
+                        aria-label="Recipient's username"
+                        aria-describedby="basic-addon2"
+                        [(ngModel)]="referrals"
+                      />
+                      <span class="input-group-text" id="basic-addon2"
+                        ><a (click)="copyReferral()">Copy link</a></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a> -->
+        <a class="profile" (click)="openLogOutDialog()" mat-menu-item>
+          <div class="d-flex align-items-start">
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center">
+                <div class="profile-icon">
+                  <i class="ri-logout-box-r-line"></i>
+                </div>
+                <div class="d-flex align-items-start flex-column ml-4">
+                  <div class="profile-title px-4 mb-0">
+                    <h3 class="mb-0">Logout</h3>
+                  </div>
+                  <div class="profile-subtitle px-4">
+                    <span>See you soon! <i class="ri-heart-fill"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </mat-menu>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

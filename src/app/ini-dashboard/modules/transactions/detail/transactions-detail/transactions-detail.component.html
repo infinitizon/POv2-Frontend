@@ -1,0 +1,151 @@
+<div class="container mb-5" *ngIf="!container['transactionsLoading']">
+  <div class="col-md-12 mt-5">
+    <in-backbutton></in-backbutton>
+  </div>
+
+  <div class="d-flex justify-content-center mt-5">
+    <div class="col-md-7 col-12 col-lg-7">
+      <div class="transactions-detail-wrapper">
+        <div class="transactions-detail-header">
+          <div class="transactions-content details col-md-12">
+            <div class="d-flex align-items-center ">
+              <div class="flex-grow-1">
+                <div class="d-flex align-items-center">
+                  <div class="">
+                    <div class="image-wrapper">
+                      <img  src="{{ transactions?.TxnHeader?.commonType === 'rights' ? (media[0]?.response || '/assets/logo/po_logo.png') : (transactions?.TxnHeader?.Asset?.Media[0]?.link || '/assets/logo/po_logo.png')  }}" alt="Offer Logo" height="40"
+                      width="40"
+                      class="rounded-circle">
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-start flex-column ml-4">
+                    <div class="transactions-desc details text-uppercase px-2 mb-0">
+                      <h3>{{transactions?.TxnHeader?.commonType === 'rights' ? transactions?.TxnHeader?.Right?.Asset?.name : transactions?.TxnHeader?.Asset?.name  }}</h3>
+                    </div>
+                    <div class="transactions-subtitle px-2"><span>{{transactions?.TxnHeader?.Asset?.subTitle}}</span></div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div *ngIf="transactions?.status !== 'pending' && transactions?.status !== 'pending_approval'" class="p-0 transactions-icon details pointer" [matMenuTriggerFor]="menu"><i class="ri-more-2-fill"></i></div> -->
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item class="mat-items" *ngIf="transactions?.status === 'success'">
+                  <div class="d-flex justify-content-between align-items-center">
+                  <i class="ri-download-2-line"></i>
+
+                  <div class="mat-items-content mx-4">
+                    <h6 class="mb-0">Download receipt</h6>
+                    <span>Get the transaction receipt</span>
+                  </div>
+                </div>
+                </button>
+                <button mat-menu-item class="mat-items"  *ngIf="transactions?.status === 'failed'">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <i class="ri-delete-bin-7-line"></i>
+
+                  <div class="mat-items-content mx-4">
+                    <h6 class="mb-0">Delete transaction</h6>
+                    <span>Remove this transaction from your record</span>
+                  </div>
+                </div>
+                </button>
+                <button mat-menu-item class="mat-items gap">
+                  <div class="d-flex justify-content-between align-items-center">
+                  <i class="ri-alarm-warning-line"></i>
+                  <div class="mat-items-content mx-4">
+                    <h6 class="mb-0">Report this transaction</h6>
+                    <span>Notify us of any issue with this transaction</span>
+                  </div>
+                  </div>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+
+          <div class="transactions-amount-details text-center">
+            <h3 class="mb-0"><span class="symbol">{{transactions?.currency}}</span> {{transactions?.amount | number:'1.2-2'}}</h3>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="transactions-status-details ">
+              <div class="d-flex align-items-center success" *ngIf="transactions?.status === 'success'">
+                <i class="ri-checkbox-circle-fill"></i><span class="px-1">Transaction
+                  successful</span>
+              </div>
+              <div class="d-flex align-items-center failed" *ngIf="transactions?.status === 'failed'">
+                <i class="ri-close-circle-fill"></i><span class="px-1">Transaction
+                  failed</span>
+              </div>
+              <div class="d-flex align-items-center pending" *ngIf="transactions?.status === 'pending' || transactions?.status === 'pending_approval'">
+                <i class="ri-information-fill"></i><span class="px-1">Transaction
+                  pending</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="transactions-detail-body">
+          <div class="d-flex justify-content-between">
+            <div class="key">
+              <h6 class="mb-0">Date</h6>
+            </div>
+            <div class="value">
+              <h6 class="mb-0">{{transactions?.createdAt | date}}</h6>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between gap">
+            <div class="key">
+              <h6 class="mb-0">Amount</h6>
+            </div>
+            <div class="value">
+              <h6 class="mb-0"> {{transactions?.amount | currency:transactions?.currency:'symbol-narrow'}}</h6>
+            </div>
+          </div>
+          <!-- <div class="d-flex justify-content-between gap">
+            <div class="key">
+              <h6 class="mb-0">Processing fee (2%)</h6>
+            </div>
+            <div class="value">
+              <h6 class="mb-0"> ₦4,000.00</h6>
+            </div>
+          </div> -->
+          <!-- <div class="d-flex justify-content-between gap">
+            <div class="key">
+              <h6 class="mb-0">Units</h6>
+            </div>
+            <div class="value">
+              <h6 class="mb-0"> 2,000</h6>
+            </div>
+          </div> -->
+          <div class="d-flex justify-content-between gap">
+            <div class="key">
+              <h6 class="mb-0">Reference</h6>
+            </div>
+            <div class="value">
+              <h6 class="mb-0">{{transactions?.TxnHeader?.reference}}</h6>
+            </div>
+          </div>
+        </div>
+        <div class="transactions-detail-footer">
+          <div class="d-flex justify-content-between">
+            <div class="key">
+              <h6 class="mb-0">Total</h6>
+            </div>
+            <div class="value">
+              <h6 class="mb-0">{{transactions?.currency}} {{transactions?.amount | number:'1.2-2'}}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="d-flex justify-content-center mt-3 mb-5">
+    <div class="col-md-5 col-5 col-lg-5">
+      <div class="btn-wrapper">
+        <button class="submit-btn">Pay again</button>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+
+<div *ngIf="container['transactionsLoading']">
+  <app-loader></app-loader>
+</div>

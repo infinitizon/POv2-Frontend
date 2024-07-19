@@ -1,0 +1,18 @@
+.eligible {
+  color: #7B7B7B;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+
+::ng-deep.mdc-dialog__title::before {
+  display: inline-block;
+  width: 0;
+  height: 0px !important;
+  content: "";
+  vertical-align: 0;
+ }
+
+
+

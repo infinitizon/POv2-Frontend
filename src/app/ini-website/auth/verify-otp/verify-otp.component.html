@@ -1,0 +1,79 @@
+<div class="container-fluid">
+  <div class="outer">
+    <div class="">
+      <div class="row">
+        <div class="col-md-6 p-0 m-0 auth-first-column">
+          <app-auth-left-bar></app-auth-left-bar>
+        </div>
+        <div class="col-md-6">
+          <div class="auth-image-wrapper logo-hide mt-4">
+            <img src="/assets/logo/new-logo.png" width="200px"  alt="Primary Logo">
+          </div>
+          <div
+          class="d-flex justify-content-between px-3 mt-5 align-items-center continue-top"
+        >
+          <div class="auth-image-wrapper">
+            <ul class="d-flex step">
+              <li ></li>
+              <li ></li>
+              <li class="active"></li>
+            </ul>
+            <!-- <mat-progress-bar mode="determinate" value="0"></mat-progress-bar>
+            <mat-progress-bar mode="determinate" value="0"></mat-progress-bar> -->
+          </div>
+          <div class="btn-wrapper">
+            <button routerLink="/auth/login" class="action-btn text-nowrap">
+              Log in
+            </button>
+          </div>
+        </div>
+          <div class="d-flex justify-content-md-center mt-5">
+            <div class="auth-c1-wrapper col-md-10 col-12 col-sm-12">
+              <div class="verify-otp-wrapper d-flex justify-content-center">
+                <div class="verify-otp-body">
+                  <div class="title mt-4 text-center">
+                    <h2>Verify your account</h2>
+                    <p>Enter the 6 digit code sent to your email address to verify your account.
+                    </p>
+                    <!-- <a routerLink="/auth/signup-continue">Change?</a> -->
+                  </div>
+                  <div class="otp-form d-flex justify-content-center">
+                    <ngx-otp-input [config]="otpInputConfig" (otpChange)="handleOtpChange($event)" (fill)="handleFillEvent($event)">
+                    </ngx-otp-input>
+                  </div>
+                  <div class="btn-wrapper col-sm-12">
+                    <button [disabled]="otp?.length != 6" (click)="onSubmit()" class="col-md-12 col-sm-12 submit-btn text-nowrap">
+                      <span class="d-flex justify-content-center align-items-center w-100">Verify
+                        <app-loader2 *ngIf="submitting"></app-loader2>
+                      </span>
+                        </button>
+                  </div>
+                  <div class="btn-wrapper col-sm-12">
+                    <button (click)="resendOtp()" class="col-md-12 col-sm-12 action-btn text-nowrap mt-3">Click here to resend OTP</button>
+                  </div>
+
+                  <div class="auth-footer-wrapper mt-2">
+                    <div class="auth-footer text-center">
+                      <!-- <span>OTP expires in <a  >9:58</a></span> -->
+                        <div class="countdown" style="color: var(--foundation-text-text-600, #2E2E2E);
+                        font-size: 14px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: 160%;">OTP expires in {{countdown}}</div>
+                    </div>
+                  </div>
+
+                  <div class="get-in-touch-wrapper">
+                    <div class="get-in-touch w-100">
+                      <span>Need help? <a class="a-link" routerLink="/auth/get-in-touch">Get in touch</a></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

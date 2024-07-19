@@ -1,0 +1,25 @@
+.partner-payment {
+  border: 1px solid var(--white-white);
+  height: 64px;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+
+  .gateway {
+     span {
+      text-transform: capitalize;
+      margin-left: 20px;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--secondary);
+     }
+  }
+  .icon {
+    font-size: 20px;
+    color: var(--primary);
+  }
+}

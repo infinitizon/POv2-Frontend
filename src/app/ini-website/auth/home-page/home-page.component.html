@@ -1,0 +1,169 @@
+<div class="main-page">
+  <div class="receiving-login-wrapper">
+    <div class="receiving-login">
+      <span
+        >Receiving Agent?
+        <a target="_blank" href="https://kind-forest-0189a3d03.5.azurestaticapps.net/" style="text-decoration: underline !important; cursor: pointer;">Login >></a></span
+      >
+    </div>
+  </div>
+  <div class="wrapper-card">
+    <div class="d-flex flex-sm-column flex-lg-row flex-row card-content">
+      <div class="col-sm-12 col-12 col-md-8 col-lg-8 m-0 p-md-5 p-lg-5 p-sm-2 p-2">
+        <div class="logo-wrapper">
+          <img src="/assets/logo/primary-offer-logo.svg" alt="Primary Logo" />
+        </div>
+
+        <div class="outer">
+          <div class="middle">
+            <div class="card-content-body">
+              <h4 class="">Select from Available Rights</h4>
+
+              <div class="types-wrapper d-flex justify-content-center w-100">
+                <div class="types-content">
+                  <app-loader *ngIf="container['loading-right']"></app-loader>
+                  <div class="d-flex flex-row column-gap-sm align-items-center">
+                    <div class="types-content-container pointer" [ngClass]="{'active': right?.id === activeOffering}" *ngFor="let right of rightIssue"  (click)="activeOffering = right?.id; selectedOffering = null;  openAvailableDialog(right)">
+                      <div class="d-flex align-items-center">
+                        <div class="">
+                          <img
+                            src="/assets/logo/po_logo.png"
+                            alt="Home Image"
+                            width="50px"
+                            height="50px"
+                            style="border-radius: 50%;"
+                          />
+                        </div>
+                        <div class="text-wrapper title mx-2">
+                          <h6 class="" style="color: #000;">{{right?.Asset?.name}}</h6>
+                          <p class="text-muted">Unit Price: {{right?.sharePrice}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="btn-wrapper d-flex flex-column flex-sm-column flex-md-row flex-lg-row mt-4 w-100 w-sm-100 w-md-75 w-lg-75">
+                <button class="submit-btn home" (click)="openAvailableDialog('ipos')" >IPOs</button>
+                <button class="action-btn home mx-md-2 mx-lg-2 mx-md-0 mx-0 mt-2 mt-sm-2 mt-md-0 mt-lg-0" (click)="openAvailableDialog('rights')">Rights Issues</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <!-- <div class="outer">
+          <div class="middle">
+            <div class="card-content-body">
+              <h4>What Would You Like To Invest in Today?</h4>
+              <div class="btn-wrapper d-flex flex-column flex-sm-column flex-md-row flex-lg-row mt-4 w-100 w-sm-100 w-md-75 w-lg-75">
+                <button class="submit-btn home" (click)="openAvailableDialog('ipos')" >IPOs</button>
+                <button class="action-btn home mx-md-2 mx-lg-2 mx-md-0 mx-0 mt-2 mt-sm-2 mt-md-0 mt-lg-0" (click)="openAvailableDialog('rights')">Rights Issues</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <div class="col-md-4 m-0 p-0 bg-home-image">
+        <img
+          src="/assets/img/home-image.svg"
+          alt="Home Image"
+          width="100%"
+          height="100%"
+        />
+      </div>
+    </div>
+
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center mt-1 mb-3">
+    <div class="auth-image-wrapper">
+   <p class="m-0">Already a customer?</p>
+    </div>
+    <div class="btn-wrapper mx-2">
+      <button  style="border: none; background-color: transparent; color: #6AC3A3 " routerLink="/auth/login" class="text-nowrap">Log in</button>
+    </div>
+  </div>
+
+  <!-- <div class="header-wrapper">
+    <div class="header-content d-flex justify-content-between align-items-center ">
+      <div class="logo-wrapper">
+        <img src="/assets/logo/primary-offer-logo.svg" alt="Primary Logo" />
+      </div>
+      <div class="btn-wrapper d-flex">
+        <a class="text-muted" routerLink="/auth/login">Login</a>
+        <a class="mx-3" routerLink="/auth/signup">Signup</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="d-flex justify-content-center">
+    <h2>Welcome to Primary Offer</h2>
+  </div>
+
+
+
+
+  <div class="types-wrapper d-flex justify-content-center w-100">
+    <div class="types-content">
+      <div class="d-flex flex-row column-gap-sm align-items-center">
+        <div class="types-content-container pointer" [ngClass]="{'active': o === activeOffering}" *ngFor="let o of offeringType"  (click)="activeOffering = o; selectedOffering = null;">
+          <div class="text-wrapper title">
+            <h6 class="m-0">{{o}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center w-100 mt-5" *ngIf="activeOffering === 'Rights'">
+    <mat-chip-listbox [multiple]="false" class="" aria-label="Color selection">
+        <mat-chip-option *ngFor="let right of rightIssue"  [color]="'primary'" (click)="selectOffering(right)">{{right.Asset.name}}</mat-chip-option>
+    </mat-chip-listbox>
+  </div>
+
+
+<div class="d-flex justify-content-center" *ngIf="selectedOffering">
+  <div class="form-group input mt-5 col-md-8">
+    <label
+      ><div class="gateway-label d-flex justify-content-between">
+        <div>Search for your name</div>
+      </div></label
+    >
+    <ng-select
+    class="ng-select-auth"
+    bindValue="id"
+    [(ngModel)]="searchName"
+    [items]="items$ | async"
+    [addTag]="addTagFn"
+    [minTermLength]="minLengthTerm"
+    [loading]="customerLoading"
+    [virtualScroll]="true"
+    typeToSearchText="{{ minLengthTerm }} or more characters"
+    [typeahead]="input$"
+    placeholder="Select Customer"
+    (change)="getCustomerId()"
+  >
+    <ng-template ng-label-tmp let-item="item">
+      <div
+        title="{{ item.firstName }} {{ item.middleName }} {{
+          item.lastName
+        }} - ({{item.email}})"
+      >
+        {{ item.firstName }} {{ item.middleName }}
+        {{ item.lastName }} - ({{item.email}})
+      </div>
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item" let-index="index">
+      <div
+        title="{{ item.firstName }} {{ item.middleName }} {{
+          item.lastName
+        }} - ({{item.email}})"
+      >
+        {{ item.firstName }} {{ item.middleName }}
+        {{ item.lastName }} - ({{item.email}})
+      </div>
+    </ng-template>
+  </ng-select>
+    </div>
+  </div> -->
+</div>

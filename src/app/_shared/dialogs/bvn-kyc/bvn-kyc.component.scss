@@ -1,0 +1,121 @@
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none !important;
+}
+
+// .body {
+//   font-size: 14px;
+//   h1 {
+//     margin: 0;
+//   }
+//   mat-stepper {
+//     position: relative;
+
+.stepper-actions {
+  bottom: 0;
+}
+
+li {
+  margin: 20px 0;
+}
+
+.cancel {
+  // width: 140px;
+  // height: 48px;
+  background: #FFFFFF;
+  border: 1px solid #00868D;
+  border-radius: 12px;
+  color: #00868D;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 13px 20px;
+  margin: 3px 5px;
+}
+
+.cancel_v2 {
+  // width: 184px;
+  // height: 48px;
+  background: #FFFFFF;
+  border: 1px solid #00868D;
+  border-radius: 12px;
+  color: #00868D;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 13px 20px;
+  margin: 3px 5px;
+}
+
+.submit {
+  // width: 85px;
+  // height: 48px;
+  background: #00868D;
+  border: 1px solid #00868D;
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 13px 20px;
+  margin: 3px 5px;
+
+  &.v2 {
+    // width: 179px;
+  }
+
+  &.v3 {
+    // width: 115px;
+  }
+}
+
+.bvn_info {
+  .icon {
+    mat-icon {
+      font-size: 16px;
+      color: rgba(0, 43, 67, 0.6);
+    }
+  }
+
+  .text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: rgba(0, 43, 67, 0.6);
+
+  }
+}
+
+::ng-deep .mat-horizontal-content-container {
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+
+
+// ::ng-deep .mat-dialog-content {
+//   /* display: block; */
+//   margin: 15px 0px;
+//   padding: 0 24px 24px 24px !important;
+//   max-height: 65vh;
+//   overflow: auto;
+//   -webkit-overflow-scrolling: touch;
+// }
+
+
+
+::ng-deep .mat-progress-bar-fill::after {
+  background-color: #00868D !important;
+}
+
+::ng-deep.mat-mdc-progress-bar {
+  --mdc-linear-progress-active-indicator-color: #00868D !important;
+}
+
+::ng-deep .mat-mdc-progress-bar {
+  background: #E4E8EB !important;
+}
+
+::ng-deep .mat-progress-bar {
+  border-radius: 2px !important;
+}
+
+// ::ng-deep .mdc-dialog .mdc-dialog__content {
+//   padding: 0px 0px 20px 0px !important;
+// }

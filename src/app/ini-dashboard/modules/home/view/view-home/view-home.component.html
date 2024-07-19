@@ -1,0 +1,236 @@
+<div class="container-fluid px-2 px-sm-2 px-md-4 px-lg-4 mb-5">
+  <div *ngIf="container['assetsLoading']">
+    <app-loader></app-loader>
+  </div>
+
+  <div class="home-header-wrapper" *ngIf="container['valueByCurrency']?.length > 0 && container['valueByCurrency']">
+    <div class="title mt-5">
+<h3>Purchase History</h3>
+    </div>
+  </div>
+  <div class="purchase-history-wrapper">
+    <div class="d-flex flex-row column-gap-sm">
+      <div class="purchase-history-container pointer" *ngFor="let item of container['valueByCurrency']"
+        [routerLink]="['/app/offers/my-portfolio-distribution', item.currency]">
+        <div class="img-wrapper">
+          <img [src]="getCurrencyDetails(item.currency).src" alt={{getCurrencyDetails(item.currency).name}} height="40" width="40" />
+        </div>
+        <div class="text-wrapper title">
+          <h5 class="mb-0">{{item.total | number}}</h5>
+          <span>{{getCurrencyDetails(item.currency).name}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div *ngIf="container['assetsLoading']">
+    <app-loader></app-loader>
+  </div> -->
+
+  <div class="offers-header-wrapper" *ngIf="!container['assetsLoading']">
+    <div class="title mt-5">
+      <h5>Available Offers</h5>
+    </div>
+  </div>
+  <div class="offers-wrapper" *ngIf="!container['assetsLoading']">
+    <div class="offers-tab-wrapper d-flex flex-row mb-4">
+      <a class="offers-tab me-3 pointer" [class.active]="tab === tabActive" (click)="tabActive = tab" *ngFor="let tab of offersTab">{{tab}}</a>
+    </div>
+
+    <div *ngIf="tabActive === 'All'">
+      <div *ngIf="assets?.length <= 0 && rightIssue?.length <= 0">
+        <app-empty-state [stateDesc]="emptyState"></app-empty-state>
+      </div>
+      <div class="row d-flex flex-row column-gap-sm row-gap-sm">
+        <div *ngFor="let right of rightIssue" class="my-2 my-sm-2 my-md-0 my-lg-0 offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/right-detail', right.id]">
+          <!-- <div class="bg-image">
+            <img src="/assets/img/access-bg.png"      height="100"
+            width="100" alt="Bg Image" />
+          </div> -->
+          <div class="bg-image">
+            <img src="/assets/img/bg-arrow.svg" alt="Bg Image" />
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="">
+              <div class="image-wrapper">
+                <!-- <img
+                src="{{right.Asset.Media.length > 0 ? right.Asset.Media[0].link : '/assets/logo/po_logo.png'}}"
+                  alt="Offer Image"
+                  height="40"
+                  width="40"
+                  class="rounded-circle"
+                /> -->
+                <img
+                  src="{{right?.extRef?.ngx?.logo ? right?.extRef?.ngx?.logo : '/assets/logo/po_logo.png'}}"
+                  alt="Offer Image"
+                  height="40"
+                  width="40"
+                  class="rounded-circle"
+                />
+              </div>
+            </div>
+            <div class="d-flex align-items-start flex-column ml-4">
+              <div class="offers-desc text-uppercase px-2 mb-0">
+                <h3 class="mb-0">{{right?.name}}</h3>
+              </div>
+              <!-- <div class="offers-subtitle px-2"><span>{{right.shortDesc}}</span></div> -->
+            </div>
+          </div>
+          <div class="d-flex justify-content-between offers-footer">
+            <div class="offers-text-wrapper">
+              <span>Share price</span>
+              <h5 class="mb-0">{{right?.Asset?.currency}} {{right?.sharePrice| number}}</h5>
+            </div>
+
+            <div class="offers-text-wrapper">
+              <span>Offer Type</span>
+              <h5 class="mb-0">Rights</h5>
+            </div>
+          </div>
+        </div>
+
+        <div  *ngFor="let asset of assets" class="my-2 my-sm-2 my-md-0 my-lg-0 offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/offers-detail', asset?.id]">
+          <div class="bg-image">
+            <img src="/assets/img/bg-arrow.svg" alt="Bg Image" />
+          </div>
+          <div class="d-flex align-items-start">
+            <div class="">
+              <div class="image-wrapper">
+                <img
+                  src="{{asset?.Media?.length > 0 ? asset?.Media[0]?.link : '/assets/logo/po_logo.png'}}"
+                  alt="Offer Image"
+                  height="40"
+                  width="40"
+                  class="rounded-circle"
+                />
+              </div>
+            </div>
+            <div class="d-flex align-items-start flex-column ml-4">
+              <div class="offers-desc text-uppercase px-2 mb-0">
+                <h3 class="mb-0">{{asset?.name}}</h3>
+              </div>
+              <div class="offers-subtitle px-2"><span>{{asset?.subTitle}}</span></div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between offers-footer">
+            <div class="offers-text-wrapper">
+              <span>Unit price</span>
+              <h5 class="mb-0">{{asset?.currency}} {{asset?.sharePrice | number}}</h5>
+            </div>
+
+            <div class="offers-text-wrapper">
+              <span>Offer Type</span>
+              <h5 class="mb-0">IPO</h5>
+              <!-- <span>Minimum Unit</span>
+              <h5 class="mb-0">{{asset.minPurchaseUnits | number}}</h5> -->
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+  </div>
+
+  <div *ngIf="tabActive === 'IPOs'">
+    <div *ngIf="assets?.length <= 0">
+      <app-empty-state [stateDesc]="emptyState"></app-empty-state>
+    </div>
+    <div class="row d-flex flex-row column-gap-sm">
+      <div  *ngFor="let asset of assets" class="offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/offers-detail', asset?.id]">
+        <div class="bg-image">
+          <img src="/assets/img/bg-arrow.svg" alt="Bg Image" />
+        </div>
+        <div class="d-flex align-items-start">
+          <div class="">
+            <div class="image-wrapper">
+              <img
+                src="{{asset?.Media?.length > 0 ? asset?.Media[0]?.link : '/assets/logo/po_logo.png'}}"
+                alt="Offer Image"
+                height="40"
+                width="40"
+                class="rounded-circle"
+              />
+            </div>
+          </div>
+          <div class="d-flex align-items-start flex-column ml-4">
+            <div class="offers-desc text-uppercase px-2 mb-0">
+              <h3 class="mb-0">{{asset?.name}}</h3>
+            </div>
+            <div class="offers-subtitle px-2"><span>{{asset?.subTitle}}</span></div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between offers-footer">
+          <div class="offers-text-wrapper">
+            <span>Unit price</span>
+            <h5 class="mb-0">{{asset?.currency}} {{asset?.sharePrice | number}}</h5>
+          </div>
+
+          <div class="offers-text-wrapper">
+            <span>Offer Type</span>
+            <h5 class="mb-0">IPO</h5>
+            <!-- <span>Minimum Unit</span>
+            <h5 class="mb-0">{{asset.minPurchaseUnits | number}}</h5> -->
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div *ngIf="tabActive === 'Rights issue'">
+    <div *ngIf="rightIssue?.length <= 0">
+      <app-empty-state [stateDesc]="emptyState"></app-empty-state>
+    </div>
+    <div class="row d-flex flex-row column-gap-sm">
+      <div *ngFor="let right of rightIssue" class="offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/right-detail', right.id]">
+        <!-- <div class="bg-image">
+          <img src="/assets/img/access-bg.png"      height="100"
+          width="100" alt="Bg Image" />
+        </div> -->
+        <div class="bg-image">
+          <img src="/assets/img/bg-arrow.svg" alt="Bg Image" />
+        </div>
+        <div class="d-flex align-items-center">
+          <div class="">
+            <div class="image-wrapper">
+                 <!-- <img
+                src="{{right.Asset.Media.length > 0 ? right.Asset.Media[0].link : '/assets/logo/po_logo.png'}}"
+                  alt="Offer Image"
+                  height="40"
+                  width="40"
+                  class="rounded-circle"
+                /> -->
+                <img
+                src="{{right?.extRef?.ngx?.logo ? right?.extRef?.ngx?.logo : '/assets/logo/po_logo.png'}}"
+                alt="Offer Image"
+                height="40"
+                width="40"
+                class="rounded-circle"
+              />
+            </div>
+          </div>
+          <div class="d-flex align-items-start flex-column ml-4">
+            <div class="offers-desc text-uppercase px-2 mb-0">
+              <h3 class="mb-0">{{right?.name}}</h3>
+            </div>
+            <!-- <div class="offers-subtitle px-2"><span>{{right.shortDesc}}</span></div> -->
+          </div>
+        </div>
+        <div class="d-flex justify-content-between offers-footer">
+          <div class="offers-text-wrapper">
+            <span>Share price</span>
+            <h5 class="mb-0">{{right?.Asset?.currency}} {{right?.sharePrice| number}}</h5>
+          </div>
+
+          <div class="offers-text-wrapper">
+            <span>Offer Type</span>
+            <h5 class="mb-0">Rights</h5>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+</div>
