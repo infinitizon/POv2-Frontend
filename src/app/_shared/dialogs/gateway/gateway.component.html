@@ -15,8 +15,7 @@
       <div class="form-group">
         <label
           ><div class="gateway-label d-flex justify-content-between">
-            <div>Enter amount</div>
-            <div class="units">{{(this.gatewayForm.get('amount').value / data.sharePrice   | number:'1.2-2') || 0}} Units</div>
+            <div>Enter number of shares <span class="text-danger">*</span></div>
           </div></label
         >
         <div class="input mt-1">
@@ -24,28 +23,28 @@
             <input
               autocomplete="off"
               matInput
-              name="amount"
+              name="unit"
               type="text"
               class=""
               placeholder=""
-              formControlName="amount"
-              (keyup)="controlChanged('amount')"
+              formControlName="unit"
+              (keyup)="controlChanged('unit');"
 
-              prefix="{{data.currency}} "
-              mask="separator.2" thousandSeparator=","
+              mask="separator.0" thousandSeparator=","
               [allowNegativeNumbers]="false"
             />
           </mat-form-field>
           <div class="error-wrapper">
-            <span *ngIf="uiErrors.amount" class="error">{{
-              uiErrors.amount
+            <div class="units text-end">{{(this.gatewayForm.get('unit').value * data.sharePrice   | currency:data.currency:'symbol-narrow') || 0}}</div>
+            <span *ngIf="uiErrors.unit" class="error">{{
+              uiErrors.unit
             }}</span>
           </div>
         </div>
       </div>
 
       <div class="form-group mt-3">
-        <label>Select payment</label>
+        <label>Select Payment Method <span class="text-danger">*</span></label>
         <div class="input mt-1 ">
           <mat-form-field appearance="outline" class="col-md-12 w-100">
             <mat-select formControlName="payment" >
@@ -71,23 +70,24 @@
       <div class="form-group input mt-3" >
         <label
           ><div class="gateway-label d-flex justify-content-between">
-            <div>Select Broker<span class="text-danger">*</span></div>
+            <div>Select Broker <span class="text-danger">*</span></div>
           </div></label
         >
         <ng-select
-          [items]="container['brokerName']?.data?.brokers"
+          [items]="  data?.ngxInfo === 'new' ? container['brokerName'] : data?.ngxInfo?.data"
           [appendTo]="'body'"
           labelForId="brokerCode"
           bindLabel="brokerName"
           appearance="outline"
           class="input-select"
           (click)="
-            commonServices.getLOVs(
-              environment.baseApiUrl + '/3rd-party-services/ngx/brokers',
+         data?.ngxInfo === 'new' ?
+          commonServices.getLOVs(
+              environment.baseApiUrl + '/3rd-party-services/ngx/brokers' + '?assetId=' + data?.id,
               'brokerName',
               container,
               { loading: 'brokerNameLoading' }
-            );
+            ) : '';
             controlChanged('broker')
           "
           notFoundText="{{ container['brokerNameLoading'] || 'No items found' }}"
@@ -95,12 +95,14 @@
           formControlName="broker"
         >
         </ng-select>
-        <span *ngIf="uiErrors.broker">{{ uiErrors.broker }}</span>
+        <div class="error-wrapper">
+        <span class="error" *ngIf="uiErrors.broker">{{ uiErrors.broker }}</span>
+        </div>
       </div>
 
       <div class="auth-footer-wrapper mt-5 mb-2">
         <div class="auth-footer mt-3 ">
-          <mat-checkbox #terms (change)="termChecked(terms.checked)" formControlName="terms" class=""> <span>I've read and agree to the <a routerLink="/auth/terms">Terms of Service</a> for this purchase</span></mat-checkbox>
+          <mat-checkbox #terms (change)="termChecked(terms.checked)" formControlName="terms" class=""> <span>I've read and agree to the <a class="a-link" href="/auth/terms" target="_blank">Terms of Service</a> for this purchase</span></mat-checkbox>
         </div>
       </div>
 

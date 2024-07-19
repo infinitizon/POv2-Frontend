@@ -86,15 +86,12 @@
       <div class="mt-5 mb-2">
         <div class="auth-footer mt-3 d-flex justify-content-center">
           <mat-checkbox #terms (change)="termChecked(terms.checked)" class="d-flex align-items-start">
-            <span *ngIf="summaryDetails?.purchaseOption === 'Partial'">I accept only the number of Ordinary Shares being paid for and renounce my rights to the balance of the ordinary shares allocated to me.
-              I have read and accepted the  <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.prospectus}}">shelf prospectus, </a> <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.pricingSupplement}}"> pricing supplement</a> and <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.termSheet}}">term sheet</a>
-              of this rights issue </span>
+            <span *ngIf="summaryDetails?.purchaseOption === 'Partial'">I accept only the number of shares being paid for and renounce my rights to the balance of the provisional allotment communicated to me. I have read and accepted the <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.prospectus}}">Rights Circular.</a></span>
 
               <span *ngIf="summaryDetails?.purchaseOption === 'Full'">
-                I have read and accepted the  <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.prospectus}}">shelf prospectus, </a> <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.pricingSupplement}}"> pricing supplement</a> and <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.termSheet}}">term sheet</a>
-                of this rights issue </span>
+                I accept in full, the provisional allotment communicated to me. I have read and accepted the <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.prospectus}}">Rights Circular.</a> </span>
 
-                <span *ngIf="summaryDetails?.purchaseOption === 'Additional'">I agree to accept the same or smaller number of additional shares in respect of which allotment may be made to me in accordance with the Provisional Allotment Letter contained in the Rights Circular.</span>
+                <span *ngIf="summaryDetails?.purchaseOption === 'Additional'">I agree to accept the same or smaller number of additional shares in respect of which allotment may be made to me. I have read and accepted the <a class="a-link" target="_blank" href="{{summaryDetails?.ngx?.ngx?.prospectus}}">Rights Circular.</a></span>
               </mat-checkbox
           >
         </div>

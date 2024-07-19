@@ -159,7 +159,7 @@ div.mat-mdc-select-panel {
 }
 
 .row-gap-sm {
-  row-gap: 2%;
+  row-gap: 20px;
 }
 
 .row-gap-md {
@@ -2412,3 +2412,18 @@ ul.step {
 //   }
 // }
 
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-disabled-selected-icon-color: #000;
+  --mdc-radio-disabled-unselected-icon-color: #000;
+  --mdc-radio-unselected-hover-icon-color: #212121;
+  --mdc-radio-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-radio-selected-focus-icon-color: var(--secondary);
+  --mdc-radio-selected-hover-icon-color: var(--secondary);
+  --mdc-radio-selected-icon-color: var(--secondary);
+  --mdc-radio-selected-pressed-icon-color: var(--secondary);
+  --mat-radio-ripple-color: #000;
+  --mat-radio-checked-ripple-color: var(--secondary);
+  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38);
+}

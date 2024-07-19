@@ -18,7 +18,7 @@ export class CommonService {
   oneDigit = /\d/;
   onlyDigits = /[0-9]+$/;
   oneLowerCase = /[a-z]/;
-  mutiple1000 = /^[1-9]+[0-9]*000$/;
+  mutiple1000 = /^[1-9]+[0-9]*00$/;
   oneUpperCase = /[A-Z]/;
   specialChar = /[ !"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/;
 
@@ -224,4 +224,17 @@ export class CommonService {
       return forbidden ? {notAllowed: {value: control.value}} : null;
     };
   }
+
+  multipleOf(multiple: any, error: ValidationErrors): ValidatorFn  | any {
+    return (control: AbstractControl): {[key: string]: any} => {
+      // console.log(control);
+      if (!control.value) {
+        return null;
+      }
+      // const value = (control.value)/(multiple);
+      // const valid = regex.test(value);
+      return (control.value) % (multiple) === 0 ? null : error;
+    };
+  }
+
 }

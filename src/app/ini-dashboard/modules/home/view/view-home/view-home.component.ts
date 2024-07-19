@@ -99,7 +99,7 @@ export class ViewHomeComponent implements OnInit {
 
   openRequirementDialog(userDetails): void {
     const requirementDialog = this.dialog.open(BvnKycComponent, {
-      data: {userDetails, showLater: true},
+      data: {userDetails, showLater: true, showNIN: false},
       width: '60%',
       maxHeight: '600px',
       disableClose: true,

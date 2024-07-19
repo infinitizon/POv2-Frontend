@@ -59,6 +59,7 @@ export class OffersDetailComponent implements OnInit {
   rightLogo: any;
   assetBanner: any = [];
   userVerification: any;
+  pricingSupplement: any;
   constructor(
     private _snackBar: MatSnackBar,
      public dialog: MatDialog,
@@ -183,6 +184,9 @@ export class OffersDetailComponent implements OnInit {
           const openingDate = new Date(this.asset.openingDate);
           if (today > closingDate || openingDate > today) { this.asset.openForPurchase = false; }
           else { this.asset.openForPurchase = true; }
+        //  this.pricingSupplement =  (this.asset?.extRef?.ngx?.pricingSupplement).split('.', 3);
+        //  this.pricingSupplement =  this.pricingSupplement.slice(0).join('.')
+        //  console.log(this.pricingSupplement);
         },
         (errResp) => {
           this.container['assetsLoading'] = false;
@@ -190,7 +194,7 @@ export class OffersDetailComponent implements OnInit {
       );
   }
 
-  checkEligibility() {
+  checkEligibility() {    this.container['userLoading'] = true;
     const eligibilityDialog = this.dialog.open(ValidateChnCscsOfferComponent, {
       data: {
         offerId: this.asset?.id,
@@ -237,26 +241,7 @@ checkCHNFromNgx(resCHN: any) {
   this.http.get(`${environment.baseApiUrl}/3rd-party-services/ngx/brokers/lookup?id=${(resCHN?.data?.chn).toUpperCase()}&type=${'CHN'}`)
   .subscribe(
     (response: any) => {
-      if(response?.data.data.isEligible) {
-        if(response?.data?.data?.status === 'NEW' || response?.data?.data?.status === 'REQUEST_OVERAGE') {
-          if(response?.data?.data?.cscs || response?.data?.data?.rin) {
-            this.getUserVerification(response);
-          } else {
-            this.openSnackBar("We could not verify your CHN/CSCS. Please contact your stock broker for assistance");
-          }
-
-        } else if(response?.data?.data.status === 'REQUEST_TRADE') {
-          this.container['userLoading'] = false;
-          this.openSnackBar("You already purchased partial rights and renounced remaining rights. To purchase additional shares, contact your stockbroker");
-        }
-      } else {
-        this.container['userLoading'] = false;
-        if(response?.data?.data.cscs || response?.data?.data.rin) {
-          this.openSnackBar("Looks like you have already participated in the Rights Issue! Please contact your broker for any additional information you may need.");
-        } else {
-          this.openSnackBar("You are not eligible to buy this rights issue, please contact your stockbroker");
-        }
-      }
+    this.getUserVerification(response);
     },
     (errResp) => {
       this.container['userLoading'] = false;
@@ -282,7 +267,8 @@ checkCHNFromNgx(resCHN: any) {
             this.userVerification?.address   ||
             this.userVerification?.lga   ||
             this.userVerification?.nationality   ||
-            this.userVerification?.state
+            this.userVerification?.state ||
+            this.userVerification?.nin
           ) {
             this.openRequirementDialog(this.userVerification);
           } else {
@@ -298,7 +284,7 @@ checkCHNFromNgx(resCHN: any) {
 
   openRequirementDialog(userDetails): void {
     const requirementDialog = this.dialog.open(BvnKycComponent, {
-      data: {userDetails, showLater: false},
+      data: {userDetails, showLater: false, showNIN: true},
       width: '60%',
       maxHeight: '600px',
       disableClose: true,
@@ -314,18 +300,21 @@ checkCHNFromNgx(resCHN: any) {
 
 
 
+
   openGatewayDialog(assetInfo?: any): void {
     const getUrl = window.location;
     const gatewayDialog = this.dialog.open(GatewayComponent, {
       data: {
-        fundName: this.asset.name,
-        assetName: this.asset.name,
+        ngxInfo: assetInfo,
+        subsequentMultipleUnits: this.asset?.subsequentMultipleUnits,
+        fundName: this.asset?.name,
+        assetName: this.asset?.name,
         assetType: 'e-ipo',
         type: 'debit',
         currency: this.asset?.currency,
         id: this.id,
         sharePrice: this.asset?.sharePrice,
-        unit: this.asset?.minPurchaseUnits,
+        minUnit: this.asset?.minPurchaseUnits,
         // module: 'invest',
         description: `New deposit for ${this.asset.name}`,
         postUrl: `${environment.baseApiUrl}/transactions/create`,
@@ -346,12 +335,13 @@ checkCHNFromNgx(resCHN: any) {
       },
 
       width: '408px',
-      height: '500px'
+      height: '550px'
     });
 
     gatewayDialog.afterClosed().subscribe((result) => {
       if (result) {
       }
+      this.container['userLoading'] = false;
     });
   }
 }

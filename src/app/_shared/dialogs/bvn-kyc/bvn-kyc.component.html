@@ -26,7 +26,7 @@
           <!-- <li *ngIf="!container['currentUser']['bvn']">Date of birth</li> -->
 
           <li *ngIf="data?.userDetails?.bvn">Verify your Bank Verification Number (BVN)</li>
-          <!-- <li *ngIf="!container['currentUser']['nin']">NIN Verification</li> -->
+          <li *ngIf="data?.userDetails?.nin && data?.showNIN">NIN Verification</li>
           <li *ngIf="data?.userDetails?.mothersMaidenName || data?.userDetails?.placeOfBirth">
             Mother's maiden name</li>
           <li *ngIf="data?.userDetails?.bankAccount">Bank details</li>
@@ -113,27 +113,30 @@
       </div>
     </mat-step>
 
-    <!-- <mat-step [stepControl]="ninFormGroup" label="Fill out your NIN information"
-    *ngIf="!container['currentUser']['nin']">
-    <h1 class="d-flex justify-content-center mb-2" style="color: #00868D; font-size: 18px; font-weight: 500;">Complete your
-      profile</h1>
+    <mat-step [stepControl]="ninFormGroup" label="Fill out your NIN information"
+    *ngIf="data?.userDetails?.nin && data?.showNIN">
+    <h1 class="d-flex justify-content-center mb-2" style="color: #00868D; font-size: 18px; font-weight: 500;">NIN Information</h1>
     <mat-progress-bar mode="determinate" value="50"></mat-progress-bar>
     <div mat-dialog-content>
       <form [formGroup]="ninFormGroup">
-      <small class="text-muted">NIN Verification</small>
         <div class="row mt-4">
           <div class="col-md-12">
             <div class="form-group">
               <label for="motherMaidenName">NIN</label>
-              <input matInput formControlName="nin" type="text" class="form-control"
-                placeholder="Your NIN"
-                (keyup)="controlChanged(ninFormGroup, 'nin')">
+              <div class="input mt-1">
+                <mat-form-field appearance="outline" class="col-md-12 w-100">
+                  <input autocomplete="off" matInput name="nin" type="text" class="" placeholder=""
+                  placeholder="Your NIN"
+                  formControlName="nin"
+                  (keyup)="controlChanged(ninFormGroup, 'nin')">
+                </mat-form-field>
+              </div>
               <span *ngIf="uiErrors.nin" class="text-danger">{{uiErrors.nin}}</span>
             </div>
           </div>
         </div>
-        <div class="text-right stepper-actions pt-4">
-          <button (click)="closeDialog()" class="cancel">I will do this later</button>
+        <div class="text-center stepper-actions pt-4">
+          <button *ngIf="!container['loadingNIN']" (click)="goToBack(stepper)"  class="cancel">Back</button>
           <button class="submit" type="submit" (click)="startNINVerification(stepper)"
             [disabled]="container['loadingNIN']">
             <span *ngIf="!container['loadingNIN']">Save</span>
@@ -142,7 +145,7 @@
         </div>
       </form>
     </div>
-  </mat-step> -->
+  </mat-step>
 
 
     <!--

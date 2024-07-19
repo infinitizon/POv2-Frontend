@@ -86,7 +86,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
             t.createdAt = moment(t.createdAt).format('MMM D, YYYY');
             return t;
           });
-          this.transactions = this.transactions?.sort((a: any, b: any) => (a['createdAt'] > b['createdAt'] ? 1 : -1));
+          // this.transactions = this.transactions?.sort((a: any, b: any) => (a['createdAt'] > b['createdAt'] ? 1 : -1));
           this.transactions = this.transactions?.reduce(
             (prev: any, now: any) => {
               if (!prev[now['createdAt']]) {

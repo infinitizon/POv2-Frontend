@@ -44,12 +44,12 @@ export class ValidateChnCscsOfferComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.validateForm = this._fb.group({
+    this.firstFormGroup = this._fb.group({
       select: ['new'],
     });
 
     this.validateForm = this._fb.group({
-      select: ['chn'],
+      validateSelect: ['chn'],
       chn: ['', [Validators.required]],
     });
   }
@@ -90,18 +90,15 @@ export class ValidateChnCscsOfferComponent implements OnInit {
 
    const fd = JSON.parse(JSON.stringify(this.validateForm.value));
    let params = new HttpParams();
-   params = params.set('id', (fd.chn).toUpperCase());
+   params = params.set('id', fd.chn);
    params = params.set('type', `${this.selectionCheck === 'chn' ? 'CHN' : 'CSCS'}`);
-   this.http.get(`${environment.baseApiUrl}/3rd-party-services/ngx/brokers/lookup`, {params: params})
+   params = params.set('isExisting', true);
+   params = params.set('assetId', this.data?.offerId);
+   this.http.get(`${environment.baseApiUrl}/3rd-party-services/ngx/brokers`, {params: params})
       .subscribe(
         (response: any) => {
           this.container['loading'] = false;
-          if(response?.data.data.isEligible) {
-            this.successSnackBar(`${this.selectionCheck === 'chn' ? 'CHN' : 'CSCS'} verified successfully`);
             this.dialogRef.close(response);
-            } else {
-              this.openSnackBar("You are not eligible to buy this offer, please contact your stockbroker");
-            }
         },
         (errResp) => {
           this.container['loading'] = false;

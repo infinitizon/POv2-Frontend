@@ -2,7 +2,7 @@ export const environment = {
   baseApiUrl: 'https://inv2-primaryoffer.azurewebsites.net/api/v2',
   // baseApiUrl: 'https://pov2-prod.azurewebsites.net/api/v2',
 
-  // baseApiUrl: 'https://silver-kings-dream.loca.lt/api/v2',
+  // baseApiUrl: 'https://fruity-berries-raise.loca.lt/api/v2',
 
   FUND_BASES: ['https://dollarfund-2.azurewebsites.net'],
   ZANIBAL_BASES: [

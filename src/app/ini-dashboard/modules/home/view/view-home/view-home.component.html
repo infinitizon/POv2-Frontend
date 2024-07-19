@@ -40,7 +40,7 @@
       <div *ngIf="assets?.length <= 0 && rightIssue?.length <= 0">
         <app-empty-state [stateDesc]="emptyState"></app-empty-state>
       </div>
-      <div class="row d-flex flex-row column-gap-sm row-gap-sm">
+      <div class="row column-gap-sm row-gap-sm">
         <div *ngFor="let right of rightIssue" class="my-2 my-sm-2 my-md-0 my-lg-0 offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/right-detail', right.id]">
           <!-- <div class="bg-image">
             <img src="/assets/img/access-bg.png"      height="100"
@@ -88,7 +88,7 @@
           </div>
         </div>
 
-        <div  *ngFor="let asset of assets" class="my-2 my-sm-2 my-md-0 my-lg-0 offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/offers-detail', asset?.id]">
+        <div  *ngFor="let asset of assets" class="my-2 my-sm-2 my-md-0 my-lg-0  offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/offers-detail', asset?.id]">
           <div class="bg-image">
             <img src="/assets/img/bg-arrow.svg" alt="Bg Image" />
           </div>
@@ -96,7 +96,7 @@
             <div class="">
               <div class="image-wrapper">
                 <img
-                  src="{{asset?.Media?.length > 0 ? asset?.Media[0]?.link : '/assets/logo/po_logo.png'}}"
+                  src="{{asset?.extRef?.ngx?.logo ? asset?.extRef?.ngx?.logo  : '/assets/logo/po_logo.png'}}"
                   alt="Offer Image"
                   height="40"
                   width="40"
@@ -136,7 +136,7 @@
       <app-empty-state [stateDesc]="emptyState"></app-empty-state>
     </div>
     <div class="row d-flex flex-row column-gap-sm">
-      <div  *ngFor="let asset of assets" class="offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/offers-detail', asset?.id]">
+      <div  *ngFor="let asset of assets" class="my-2 my-sm-2 my-md-0 my-lg-0 offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/offers-detail', asset?.id]">
         <div class="bg-image">
           <img src="/assets/img/bg-arrow.svg" alt="Bg Image" />
         </div>
@@ -144,7 +144,7 @@
           <div class="">
             <div class="image-wrapper">
               <img
-                src="{{asset?.Media?.length > 0 ? asset?.Media[0]?.link : '/assets/logo/po_logo.png'}}"
+                src="{{asset?.extRef?.ngx?.logo ? asset?.extRef?.ngx?.logo  : '/assets/logo/po_logo.png'}}"
                 alt="Offer Image"
                 height="40"
                 width="40"
@@ -183,7 +183,7 @@
       <app-empty-state [stateDesc]="emptyState"></app-empty-state>
     </div>
     <div class="row d-flex flex-row column-gap-sm">
-      <div *ngFor="let right of rightIssue" class="offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/right-detail', right.id]">
+      <div *ngFor="let right of rightIssue" class="my-2 my-sm-2 my-md-0 my-lg-0 offers-container col-12 col-sm-12 col-md-4 col-lg-4 pointer" [routerLink]="['/app/offers/right-detail', right.id]">
         <!-- <div class="bg-image">
           <img src="/assets/img/access-bg.png"      height="100"
           width="100" alt="Bg Image" />

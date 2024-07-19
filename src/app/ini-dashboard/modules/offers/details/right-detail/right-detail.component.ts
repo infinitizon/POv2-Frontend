@@ -261,7 +261,7 @@ getUserVerification(rightInfo: any) {
 
   openRequirementDialog(userDetails): void {
     const requirementDialog = this.dialog.open(BvnKycComponent, {
-      data: {userDetails, showLater: false},
+      data: {userDetails, showLater: false, showNIN: false},
       width: '60%',
       maxHeight: '600px',
       disableClose: true,

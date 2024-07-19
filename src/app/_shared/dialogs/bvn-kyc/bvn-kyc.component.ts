@@ -280,13 +280,14 @@ export class BvnKycComponent implements OnInit {
   startNINVerification(stepper: MatStepper) {
     this.container['loadingNIN'] = true;
     const fd = JSON.parse(JSON.stringify(this.ninFormGroup.value));
+    const bd = {nin: fd}
     this.http
-    .post(`${environment.baseApiUrl}/verifications/nin`, fd)
+    .post(`${environment.baseApiUrl}/users/${this.userInformation?.id}/profile`, bd)
     .subscribe(
       (resp: any) => {
-        console.log(resp)
+        this.successSnackBar(resp.nin.message);
         stepper.next();
-        // this.container['loadingBvn'] = false;
+        this.container['loadingNIN'] = false;
       },
       (errResp) => {
         this.container['loadingNIN'] = false;
