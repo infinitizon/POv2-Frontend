@@ -1,15 +1,20 @@
 export const ValidationMessages = {
-  amount: {
-    required: 'Amount is required',
-    divisionBy: 'Amount should be minimum of {{sharePrice}} for {{minPurchaseUnits}} units'
+  unit: {
+    required: 'Unit is required',
+    multipleOf: 'Unit should be multiple of {{unit}}',
+    min: 'Minimum of {{minUnit}} units'
   },
   payment: {
     required: 'Payment is required',
+  },
+  broker: {
+    required: 'Broker is required',
   }
 };
 export let FormErrors = {
   amount: '',
-  payment: ''
+  payment: '',
+  broker: ''
 };
 
 export interface Gateway {

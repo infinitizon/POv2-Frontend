@@ -1,27 +1,27 @@
+<div class="d-flex justify-content-end me-4 mt-3">
+  <button class="close-button" [mat-dialog-close]="false">
+    <i class="ri-close-line"></i>
+  </button>
+</div>
 <div mat-dialog-content class="gateway-wrapper mt-3">
-  <mat-spinner *ngIf="container.loading" [diameter]="40"></mat-spinner>
   <mat-stepper
     [linear]="container['linear']"
     #stepper
-    *ngIf="!container.loading"
     (selectionChange)="selectionChange($event)"
   >
     <mat-step>
       <div>
         <div class="col-sm-12">
-          <div class="d-flex justify-content-center">
-            <img src="/assets/logo/lock.svg" class="m-2" />
-          </div>
           <h1
             class="mt-1 mb-0 d-flex justify-content-center text-center"
-            style="color: var(--secondary); font-size: 18px; font-weight: 500"
+            style="color: var(--secondary); font-size: 20px; font-weight: 500"
           >
             Are you a New or Existing Investor?
           </h1>
           <!-- <small class="text-muted">We need you to add your extra information to further secure your account</small> -->
         </div>
       </div>
-      <div mat-dialog-content>
+      <div mat-dialog-content class="mt-4">
         <form [formGroup]="firstFormGroup">
           <div>
             <div class="form-group mt-3">
@@ -41,32 +41,30 @@
           </div>
         </form>
       </div>
-      <div class="text-center stepper-actions pt-4 mb-4 px-2">
+      <div class="text-center stepper-actions pt-4 px-2">
         <button class="submit" (click)="proceed(stepper)">Continue</button>
       </div>
     </mat-step>
 
-    <mat-step [stepControl]="validateForm">
+    <mat-step >
       <h3 class="mb-0 text-center">Enter your CHN or CSCS</h3>
       <p class="mb-0 text-center chn-text mx-4 mt-2">
-        Please enter your Clearing House Number (CHN) or Registrars
-        Identification Number (RIN) to check your eligibility.
+        Please enter your Clearing House Number (CHN) or Central Securities Clearing System (CSCS) to check your eligibility.
       </p>
-      <mat-progress-bar mode="determinate" value="25"></mat-progress-bar>
       <div mat-dialog-content>
         <form [formGroup]="validateForm">
           <div>
             <div class="form-group mt-3">
               <mat-radio-group
-                formControlName="select"
-                name="radioButtons"
+                formControlName="validateSelect"
+                name="radioButtons2"
                 (change)="onRadioButtonChange($event)"
               >
-                <mat-radio-button id="radio_1" value="chn"
+                <mat-radio-button id="radio_3" value="chn"
                   >Clearing House Number (CHN)</mat-radio-button
                 >
-                <mat-radio-button id="radio_2" value="rin"
-                  >Registrars Identification Number (CSCS)</mat-radio-button
+                <mat-radio-button id="radio_4" value="cscs"
+                  >Central Securities Clearing System (CSCS)</mat-radio-button
                 >
               </mat-radio-group>
             </div>
@@ -75,7 +73,7 @@
               <div class="gateway-label d-flex justify-content-between">
                 <label>
                   <div>
-                    {{ selectionCheck === "chn" ? "CHN" : "RIN"
+                    {{ selectionCheck === "chn" ? "CHN" : "CSCS"
                     }}<span class="text-danger">*</span>
                   </div>
                 </label>
@@ -106,7 +104,7 @@
             </div>
           </div>
 
-          <div class="text-center stepper-actions pt-4 mt-2 mb-3">
+          <div class="text-center stepper-actions pt-4 mt-2 mb-2">
             <button
               class="submit"
               type="submit"

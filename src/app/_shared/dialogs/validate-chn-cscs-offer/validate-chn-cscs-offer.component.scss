@@ -17,3 +17,52 @@
 ::ng-deep .mat-progress-bar {
   border-radius: 2px !important;
 }
+
+
+mat-radio-button {
+  display: flex;
+  flex-direction: column;
+  // margin:10px;
+}
+
+
+::ng-deep .mdc-form-field {
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+}
+
+.submit {
+  // width: 85px;
+  // height: 48px;
+  background: var(--secondary);
+  border: 1px solid var(--secondary);
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 13px 20px;
+  margin: 3px 5px;
+
+  &.v2 {
+    // width: 179px;
+  }
+
+  &.v3 {
+    // width: 115px;
+  }
+}
+
+
+::ng-deep.mdc-form-field>label {
+  margin-left: 0;
+  margin-right: auto;
+  padding-left: 4px;
+  padding-right: 0;
+  order: 0;
+  font-size: 18px;
+}
+
+.chn-text {
+  font-size: 12px;
+}

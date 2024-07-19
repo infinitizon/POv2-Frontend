@@ -53,12 +53,9 @@ export class GatewayComponent implements OnInit {
 
   ngOnInit() {
     this.gatewayForm = this.fb.group({
-      amount: ['', [Validators.required,  this.commonServices.divisionValidator(
-        this.data?.unit *  this.data?.sharePrice,
-        { divisionBy: '' }
-      )]],
+      unit: ['', [Validators.required, Validators.min(this.data?.minUnit), this.commonServices.multipleOf(this.data?.subsequentMultipleUnits, { multipleOf: '' })]],
       payment: ['', [Validators.required]],
-      broker: [''],
+      broker: ['', [Validators.required]],
       paymentMethod: ['online', [Validators.required]],
       terms: [false]
     });
@@ -117,51 +114,36 @@ export class GatewayComponent implements OnInit {
       // console.log('Got here');
 
       return;
-    }
-  //   {
-  //     "gatewayId": "3b57b90b-7d53-4f24-983a-05d8380a4fd2",
-  //     "gateway": "paystack",
-  //     "paymentMethod": "online",
-  //     "channel": "paystack",
-  //     "type": "debit",
-  //     "offeringTypeId": "149b246d-c6ac-49f3-a37a-6f419de40ded",
-  //     "offeringType": "ipo",
-  //     "currency": "NGN",
-  //     "description": "New deposit for International breweries",
-  //     "redirectUrl": "https://thankful-river-02d0ebb03.5.azurestaticapps.net/app/home/view",
-  //     "callbackParams": {
-  //         "module": "assets",
-  //         "assetId": "149b246d-c6ac-49f3-a37a-6f419de40ded",
-  //         "gatewayId": "3b57b90b-7d53-4f24-983a-05d8380a4fd2",
-  //         "resident": null,
-  //         "tenor": null,
-  //         "saveCard": false
-  //     },
-  //     "gatewayEndpoints": "https://inv2-primaryoffer.azurewebsites.net/api/v2/3rd-party-services/gateway?id=149b246d-c6ac-49f3-a37a-6f419de40ded&modules=ipo",
-  //     "purchase": [
-  //         {
-  //             "units": 200
-  //         }
-  //     ]
-  // }
+        }
+
 
     this.container['submitting'] = true;
+    console.log(this.gatewayForm.value);
     let formData = { ...this.gatewayForm.value, ...this.data, ...fd };
-    formData.amount = Number(formData.amount);
+    formData.amount = Number(formData.unit * this.data.sharePrice);
     formData.offeringTypeId = formData.id,
     formData.offeringType =  "ipo",
-    formData.transAmount = formData.amount;
-    formData.assetQuantity =  formData.amount / this.data.sharePrice;
+    formData.transAmount = Number(formData.unit * this.data.sharePrice);
+    formData.assetQuantity =  formData.unit ;
     formData.callbackParams.gatewayId = formData.gatewayId;
     formData.callbackParams.saveCard = false;
     formData.purchase = [
-      { units: formData.amount / this.data.sharePrice}
+      { units: formData.unit}
     ];
+    // if(this.data?.ngxInfo === 'new') {
+    //   formData.callbackParams.brokerId = formData?.broker?.id;
+    // } else {
+      // formData.callbackParams.chn = this.data?.ngxInfo?.data?.data?.tradingInformation?.chn;
+      // formData.callbackParams.cscs = formData?.broker?.cscsNo;
+      formData.callbackParams.broker = {...formData?.broker, chn: this.data?.ngxInfo?.chn};
+    // }
     delete formData.payment;
     delete formData.id;
     delete formData.unit;
     delete formData.sharePrice;
     delete formData.subaccountId;
+    delete formData.broker;
+    delete formData.ngxInfo;
     this.http
       .post(
         this.data?.post_url
@@ -283,7 +265,9 @@ export class GatewayComponent implements OnInit {
       Object.keys(this.errors[control]).forEach((error: any) => {
         this.uiErrors[control] = this.validationMessages[control][error]
         ?.replace('{{minPurchaseUnits}}', formatNumber(this.data?.unit,"en-US", "1.2-2"))
-        ?.replace('{{sharePrice}}', this.data.currency + formatNumber(this.data.sharePrice * this.data?.unit,"en-US", "1.2-2"));
+        ?.replace('{{sharePrice}}', this.data.currency + formatNumber(this.data.sharePrice * this.data?.unit,"en-US", "1.2-2"))
+        ?.replace('{{minUnit}}', this.data?.minUnit)
+        ?.replace('{{unit}}', this.data?.subsequentMultipleUnits);
       });
     });
   }

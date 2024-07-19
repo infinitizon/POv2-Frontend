@@ -44,7 +44,7 @@
               <button
                 [disabled]="!asset?.openForPurchase || container['userLoading']"
                 class="submit-btn text-nowrap"
-                (click)="checkUserFromCHD()"
+                (click)="checkEligibility()"
               >
               <span *ngIf="!container['userLoading']">
               {{asset?.openForPurchase ?  'Buy offer' : 'Closed' }}
@@ -149,7 +149,7 @@
   </div>
 
   <div class="wrap d-flex w-100 justify-content-center flex-column flex-sm-column flex-md-row flex-lg-row mt-4">
-    <!-- <a class="download-doc " href="{{right?.extRef?.ngx?.pricingSupplement}}" target="_blank">
+    <a class="download-doc" href="{{asset?.extRef?.ngx?.pricingSupplement}}" download="Pricing Supplement" target="_blank">
       <div>
         <div class="d-flex align-items-center">
           <div class="pdf"><span>PDF</span></div>
@@ -157,18 +157,18 @@
         </div>
       </div>
       <div><i class="ri-download-2-line"></i></div>
-    </a> -->
-    <a class="download-doc mx-sm-0 mx-0 mx-lg-2 mx-md-2 mx-lg-2 my-sm-2 my-2 my-md-0 my-lg-0" href="{{asset?.extRef?.ngx?.prospectus}}" target="_blank">
+    </a>
+    <a class="download-doc mx-sm-0 mx-0 mx-lg-2 mx-md-2 mx-lg-2 my-sm-2 my-2 my-md-0 my-lg-0" href="{{asset?.extRef?.ngx?.prospectus}}" download="Prospectus.pdf" target="_blank">
       <div>
         <div class="d-flex align-items-center">
           <div class="pdf"><span>PDF</span></div>
-          <div class="text mx-3"><span>Download Offer Circular</span></div>
+          <div class="text mx-3"><span>Prospectus</span></div>
         </div>
       </div>
       <div><i class="ri-download-2-line"></i></div>
     </a>
 
-    <!-- <a class="download-doc" href="{{right?.extRef?.ngx?.termSheet}}" target="_blank">
+    <a class="download-doc" href="{{asset?.extRef?.ngx?.termSheet}}" download="Term Sheet.pdf" target="_blank">
       <div>
         <div class="d-flex align-items-center">
           <div class="pdf"><span>PDF</span></div>
@@ -176,7 +176,7 @@
         </div>
       </div>
       <div><i class="ri-download-2-line"></i></div>
-    </a> -->
+    </a>
     <!-- <a href="#" class="btn-slide">
     <span class="circle2"><i class="fa fa-rocket"></i></span>
     <span class="title2">Demo</span>
