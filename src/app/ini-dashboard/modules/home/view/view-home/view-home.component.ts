@@ -37,6 +37,7 @@ export class ViewHomeComponent implements OnInit {
   tabActive = 'All';
   rightIssue!: any;
   userVerification: any;
+  allOffer: any;
   constructor(
     public dialog: MatDialog,
     public appContext: ApplicationContextService,
@@ -86,6 +87,8 @@ export class ViewHomeComponent implements OnInit {
           this.container['valueByCurrency']  = (valueByCurrency as {data: any})?.data;
           this.container['assetsLoading'] = false;
           this.rightIssue = (rights as {data: any})?.data;
+
+          this.allOffer = this.rightIssue.concat(this.assets);
       },
       (errResp) => {
         this.container['assetsLoading'] = false;
