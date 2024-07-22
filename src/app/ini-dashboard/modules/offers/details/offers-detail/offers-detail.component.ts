@@ -270,7 +270,7 @@ checkCHNFromNgx(resCHN: any) {
             this.userVerification?.state ||
             this.userVerification?.nin
           ) {
-            this.openRequirementDialog(this.userVerification);
+            this.openRequirementDialog(this.userVerification, assetInfo);
           } else {
             this.openGatewayDialog(assetInfo)
           }
@@ -282,7 +282,7 @@ checkCHNFromNgx(resCHN: any) {
       );
   }
 
-  openRequirementDialog(userDetails): void {
+  openRequirementDialog(userDetails, assetInfo): void {
     const requirementDialog = this.dialog.open(BvnKycComponent, {
       data: {userDetails, showLater: false, showNIN: true},
       width: '60%',
@@ -293,8 +293,11 @@ checkCHNFromNgx(resCHN: any) {
 
     requirementDialog.afterClosed().subscribe((result) => {
       if (result) {
+        this.openGatewayDialog(assetInfo)
       }
-      this.container['userLoading'] = false;
+       else {
+         this.container['userLoading'] = false;
+      }
     });
   }
 
