@@ -135,7 +135,7 @@ export class GatewayComponent implements OnInit {
     // } else {
       // formData.callbackParams.chn = this.data?.ngxInfo?.data?.data?.tradingInformation?.chn;
       // formData.callbackParams.cscs = formData?.broker?.cscsNo;
-      formData.callbackParams.broker = {...formData?.broker, chn: this.data?.ngxInfo?.chn};
+      formData.callbackParams.broker = {...formData?.broker, cscs:formData?.broker?.cscsNo,  chn: this.data?.ngxInfo?.chn};
     // }
     delete formData.payment;
     delete formData.id;
@@ -144,6 +144,7 @@ export class GatewayComponent implements OnInit {
     delete formData.subaccountId;
     delete formData.broker;
     delete formData.ngxInfo;
+    delete formData.callbackParams.broker.cscsNo;
     this.http
       .post(
         this.data?.post_url
