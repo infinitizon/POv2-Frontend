@@ -36,7 +36,7 @@ export class MyPortfolioDistributionComponent implements OnInit {
       (valueByAsset) => {
         this.container['assetsLoading'] = false;
         this.container['valueByAsset']  = (valueByAsset as {data: any})?.data[0];
-        this.container['totValInAsset'] = (this.container['valueByAsset'] as []).reduce((asset, {total}) => asset + total, 0)
+        // this.container['totValInAsset'] = (this.container['valueByAsset'] as []).reduce((asset, {total}) => asset + total, 0)
         this.media = this.container['valueByAsset']?.TxnHeader?.Right?.Media?.filter((item: any) => {
           return item?.type?.name === 'logo'
         });
