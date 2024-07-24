@@ -118,7 +118,6 @@ export class GatewayComponent implements OnInit {
 
 
     this.container['submitting'] = true;
-    console.log(this.gatewayForm.value);
     let formData = { ...this.gatewayForm.value, ...this.data, ...fd };
     formData.amount = Number(formData.unit * this.data.sharePrice);
     formData.offeringTypeId = formData.id,
@@ -223,11 +222,14 @@ export class GatewayComponent implements OnInit {
       else {
         this.router.navigate(['/app/offers/gateway-payment']);
         let formData = { ...this.gatewayForm.value, ...this.data, ...fd};
+        formData.offeringTypeId = formData.id,
+        formData.offeringType =  "ipo",
         this.offerService.gatewayDetails = {
           currency: this.data.currency,
           payment_method: this.gatewayForm.get('payment')?.value.gateway === null ? 'bank' : 'online',
           id: this.data.id,
-          formData: formData
+          formData: formData,
+          chn: this.data?.ngxInfo?.chn
         };
         this.dialog.closeAll();
       }
