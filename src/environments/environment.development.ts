@@ -1,5 +1,5 @@
 export const environment = {
-  baseApiUrl: 'https://inv2-primaryoffer.azurewebsites.net/api/v2',
+  baseApiUrl: 'http://localhost:2110/api/v2',
   // baseApiUrl: 'https://pov2-prod.azurewebsites.net/api/v2',
 
   // baseApiUrl: 'https://fruity-berries-raise.loca.lt/api/v2',

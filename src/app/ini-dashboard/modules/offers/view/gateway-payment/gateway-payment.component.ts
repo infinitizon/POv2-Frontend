@@ -108,7 +108,7 @@ export class GatewayPaymentComponent implements OnInit {
           this.gatewayDetails?.formData?.callbackParams?.assetId
         }","gatewayId":"${
           this.gatewayDetails?.formData?.gatewayId
-        }","saveCard":${false}}, "broker":${JSON.stringify(broker)}`
+        }","saveCard":${false}, "broker":${JSON.stringify(broker)}}`
       );
       formData.append('offeringTypeId', this.gatewayDetails?.formData?.offeringTypeId);
       formData.append('offeringType', this.gatewayDetails?.formData?.offeringType);
