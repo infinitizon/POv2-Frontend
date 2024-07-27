@@ -89,7 +89,7 @@ export class RightGatewayComponent implements OnInit {
     });
 
     if (this.data?.rightEntitled?.data?.data?.status === 'NEW') {
-      this.purchaseOptionsData = ['Full', 'Partial'];
+      this.purchaseOptionsData = ['Full', 'Partial', 'Additional'];
     } else if (
       this.data?.rightEntitled?.data?.data?.status === 'REQUEST_OVERAGE'
     ) {
@@ -97,6 +97,13 @@ export class RightGatewayComponent implements OnInit {
       this.getBrokerId = this.data?.rightEntitled?.data?.data?.brokerId;
       this.getInvestor();
     }
+
+    this.gatewayForm.get('purchaseOption').valueChanges.subscribe((data) => {
+               if(data === 'Additional') {
+                this.getBrokerId = this.data?.rightEntitled?.data?.data?.brokerId;
+                this.getInvestor();
+               }
+    });
 
     // if (!this.data?.rightEntitled?.data?.data?.brokerId) {
     //       this.getBrokerList();
@@ -173,7 +180,7 @@ export class RightGatewayComponent implements OnInit {
       this.gatewayForm.get('rightEntitled').updateValueAndValidity();
       this.gatewayForm.get('additional').patchValue('');
     } else if (this.gatewayForm.get('purchaseOption')?.value === 'Additional') {
-      if (this.data?.rightEntitled?.data?.data?.status === 'REQUEST_OVERAGE') {
+      // if (this.data?.rightEntitled?.data?.data?.status === 'REQUEST_OVERAGE') {
         this.gatewayForm
           .get('additional')
           .setValidators([
@@ -184,7 +191,7 @@ export class RightGatewayComponent implements OnInit {
             //   { checkBy: '' }
             // ),
           ]);
-      }
+      // }
       this.gatewayForm.get('unit').patchValue('');
       this.gatewayForm.get('additional').updateValueAndValidity();
       this.gatewayForm.get('rightEntitled').clearValidators();
@@ -196,10 +203,17 @@ export class RightGatewayComponent implements OnInit {
       totalAmount =
         this.data.sharePrice *
         Number(this.gatewayForm.get('rightEntitled')?.value);
+        this.gatewayForm
+        .get('rightEntitled')
+        .setValidators([
+          Validators.required,
+          this.commonServices.notAllowed(/^0/)
+        ]);
       this.gatewayForm.get('unit').clearValidators();
       this.gatewayForm.get('additional').clearValidators();
       this.gatewayForm.get('unit').updateValueAndValidity();
       this.gatewayForm.get('additional').updateValueAndValidity();
+      this.gatewayForm.get('rightEntitled').updateValueAndValidity();
       this.gatewayForm.get('additional').patchValue('');
       this.gatewayForm.get('unit').patchValue('');
     }
