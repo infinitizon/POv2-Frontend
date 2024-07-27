@@ -104,7 +104,7 @@ export class GatewayPaymentComponent implements OnInit {
       formData.append('amount', amount);
       formData.append(
         'callbackParams',
-        `{"module":"invest","resident": ${null},"tenor": ${null},"assetId": "${
+        `{"module":"assets","resident": ${null},"tenor": ${null},"assetId": "${
           this.gatewayDetails?.formData?.callbackParams?.assetId
         }","gatewayId":"${
           this.gatewayDetails?.formData?.gatewayId
