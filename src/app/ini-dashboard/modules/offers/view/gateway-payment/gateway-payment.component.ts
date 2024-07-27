@@ -94,33 +94,39 @@ export class GatewayPaymentComponent implements OnInit {
       this.openSnackBar('Add Proof');
       this.submitting = false;
     } else {
-      const unit: any =
-        this.gatewayDetails?.formData?.amount /
-        this.gatewayDetails?.formData?.sharePrice;
+      console.log(this.gatewayDetails?.formData);
+      const purchase: any = [{
+        units: this.gatewayDetails?.formData?.unit
+      }];
+      const amount: any = Number(this.gatewayDetails?.formData?.unit * this.gatewayDetails?.formData?.sharePrice);
+      const broker: any = {...this.gatewayDetails?.formData?.broker, cscs:this.gatewayDetails?.formData?.broker?.cscsNo,  chn: this.gatewayDetails?.chn};
       const formData = new FormData();
-      formData.append('amount', this.gatewayDetails?.formData?.amount);
+      formData.append('amount', amount);
       formData.append(
         'callbackParams',
-        `{"module":"invest","resident": ${null},"tenor": ${null},"assetId": "${
+        `{"module":"assets","resident": ${null},"tenor": ${null},"assetId": "${
           this.gatewayDetails?.formData?.callbackParams?.assetId
         }","gatewayId":"${
           this.gatewayDetails?.formData?.gatewayId
-        }","saveCard":${false}}`
+        }","saveCard":${false}, "broker":${JSON.stringify(broker)}}`
       );
-      formData.append('currency', this.gatewayDetails?.currency);
+      formData.append('offeringTypeId', this.gatewayDetails?.formData?.offeringTypeId);
+      formData.append('offeringType', this.gatewayDetails?.formData?.offeringType);
+      formData.append('currency', this.gatewayDetails?.formData?.currency);
       formData.append(
         'paymentMethod',
         this.gatewayDetails?.formData?.paymentMethod
       );
       formData.append('gateway', 'bankTransfer');
-      formData.append('assetQuantity', unit);
+      formData.append('purchase', JSON.stringify(purchase));
+      formData.append('assetQuantity', this.gatewayDetails?.formData?.unit);
       formData.append(
         'redirectUrl',
         this.gatewayDetails?.formData?.redirectUrl
       );
       formData.append('image', this.file[0]);
       this.http
-        .post(`${environment.baseApiUrl}/3rd-party-services/payment/initiate`,
+        .post(`${environment.baseApiUrl}/transactions/create`,
           formData
         )
         .subscribe((response: any) => {

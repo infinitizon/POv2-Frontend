@@ -9,16 +9,16 @@
         <div class="col">
           <div class="gateway-content-wrapper">
             <div class="gateway-content">
-              <p class="name">You are set {{ userInformation.firstName }},</p>
-              <p class="desc" *ngIf="gatewayDetails.payment_method === 'bank'">
+              <p class="name">You are set {{ userInformation?.firstName }},</p>
+              <p class="desc" *ngIf="gatewayDetails?.payment_method === 'bank'">
                 Make payment to provided account
               </p>
-              <p class="desc" *ngIf="gatewayDetails.payment_method === 'card'">
+              <p class="desc" *ngIf="gatewayDetails?.payment_method === 'card'">
                 Make payment with card
               </p>
               <p
                 class="desc"
-                *ngIf="gatewayDetails.payment_method === 'online'"
+                *ngIf="gatewayDetails?.payment_method === 'online'"
               >
                 Make payment to purchase this offer
               </p>
@@ -29,16 +29,16 @@
                   <i class="ri-error-warning-fill"></i>
                 </div>
                 <div class="text px-2">
-                  <span *ngIf="gatewayDetails.payment_method === 'bank'">
+                  <span *ngIf="gatewayDetails?.payment_method === 'bank'">
                     Transfers can take up to
                     <span class="business">1 - 4 business days</span> for to be
                     received and verified. Questions about your transfer? Please
                     contact your bank.
                   </span>
-                  <span *ngIf="gatewayDetails.payment_method === 'card'">
+                  <span *ngIf="gatewayDetails?.payment_method === 'card'">
                     Questions about your transfer? Please contact your bank.
                   </span>
-                  <span *ngIf="gatewayDetails.payment_method === 'online'">
+                  <span *ngIf="gatewayDetails?.payment_method === 'online'">
                     Verification and settlement of purchase can take up to
                     <span class="business">1 - 4 business days.</span> Questions
                     about your transfer? Please contact your bank.
@@ -53,19 +53,19 @@
             <div class="transfer-detail-header title">
               <h2
                 class="text-center"
-                *ngIf="gatewayDetails.payment_method === 'bank'"
+                *ngIf="gatewayDetails?.payment_method === 'bank'"
               >
                 Transfer details
               </h2>
               <h2
                 class="text-center"
-                *ngIf="gatewayDetails.payment_method === 'online'"
+                *ngIf="gatewayDetails?.payment_method === 'online'"
               >
                 Payment summary
               </h2>
               <h2
                 class="text-left"
-                *ngIf="gatewayDetails.payment_method === 'card'"
+                *ngIf="gatewayDetails?.payment_method === 'card'"
               >
                 Pay with card
               </h2>
@@ -200,7 +200,7 @@
 
               <div
                 class="d-flex align-items-start mt-4"
-                *ngIf="gatewayDetails.payment_method === 'online'"
+                *ngIf="gatewayDetails?.payment_method === 'online'"
               >
                 <div class="col-md-12 col-12 col-sm-12 col-lg-12">
                   <div>
@@ -255,12 +255,12 @@
                           >
                             <div class="key">
                               <span
-                                >Amount ({{ gatewayDetails.currency }})</span
+                                >Amount ({{ gatewayDetails?.formData?.currency }})</span
                               >
                             </div>
                             <div class="value mb-0">
                               <span>{{
-                                gatewayDetails.formData.amount
+                                (this.gatewayDetails?.formData?.unit * this.gatewayDetails?.formData?.sharePrice)
                                   | number: '1.2-2'
                               }}</span>
                             </div>
@@ -275,8 +275,7 @@
                             <div class="key"><span>Units</span></div>
                             <div class="value mb-0">
                               <span>{{
-                                gatewayDetails.formData.amount /
-                                gatewayDetails?.formData?.sharePrice | number: '1.2-2'
+                                gatewayDetails?.formData?.unit| number: '1.2-2'
                               }}</span>
                             </div>
                           </div>
@@ -289,7 +288,7 @@
 
               <div
                 class="d-flex align-items-start mt-4"
-                *ngIf="gatewayDetails.payment_method === 'online'"
+                *ngIf="gatewayDetails?.payment_method === 'online'"
               >
                 <div class="col-md-12 col-12 col-sm-12 col-lg-12">
                   <div>
@@ -333,7 +332,7 @@
 
               <div
                 class="d-flex align-items-start mt-4"
-                *ngIf="gatewayDetails.payment_method === 'bank'"
+                *ngIf="gatewayDetails?.payment_method === 'bank'"
               >
                 <div class="col-md-12 col-12 col-sm-12 col-lg-12">
                   <span [innerHTML]="bankPayment?.details"></span>
@@ -405,7 +404,7 @@
 
               <div
                 class="mt-4"
-                *ngIf="gatewayDetails.payment_method === 'bank'"
+                *ngIf="gatewayDetails?.payment_method === 'bank'"
               >
                 <file-upload
                   [ngModelOptions]="{ standalone: true }"
@@ -453,10 +452,10 @@
               </div>
               <div
                 class="button-wrapper"
-                [ngClass]="{ v3: gatewayDetails.payment_method === 'online' }"
+                [ngClass]="{ v3: gatewayDetails?.payment_method === 'online' }"
                 *ngIf="
-                  gatewayDetails.payment_method === 'card' ||
-                  gatewayDetails.payment_method === 'online'
+                  gatewayDetails?.payment_method === 'card' ||
+                  gatewayDetails?.payment_method === 'online'
                 "
               >
                 <button class="submit-btn">Make payment</button>
@@ -464,7 +463,7 @@
 
               <div
                 class="button-wrapper"
-                *ngIf="gatewayDetails.payment_method === 'bank'"
+                *ngIf="gatewayDetails?.payment_method === 'bank'"
               >
                 <button
                   class="submit-btn"
