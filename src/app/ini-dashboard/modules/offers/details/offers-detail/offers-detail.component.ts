@@ -202,7 +202,7 @@ export class OffersDetailComponent implements OnInit {
       width: '40%',
       maxHeight: '600px',
       // height: '315px',
-      disableClose: false,
+      disableClose: true,
       autoFocus: false,
     });
 
@@ -336,7 +336,7 @@ checkCHNFromNgx(resCHN: any) {
         },
         gatewayEndpoints: `${environment.baseApiUrl}/3rd-party-services/gateway?id=${this.id}&modules=assets`
       },
-
+      disableClose: true,
       width: '408px',
       height: '550px'
     });
