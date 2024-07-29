@@ -53,6 +53,7 @@ export class RightSummaryComponent implements OnInit {
     const rightPaymentDialog = this.dialog.open(PaymentPartnerComponent, {
       data: this.summaryDetails,
       width: '408px',
+      disableClose: true,
       // height: '500px'
     });
 

@@ -114,7 +114,7 @@ export class RightDetailComponent implements OnInit, AfterViewInit {
       width: '40%',
       maxHeight: '600px',
       // height: '315px',
-      disableClose: false,
+      disableClose: true,
       autoFocus: false,
     });
 
@@ -244,7 +244,7 @@ getUserVerification(rightInfo: any) {
           gatewayEndpoints: `${environment.baseApiUrl}/3rd-party-services/gateway?id=${this.right?.id}&modules=rights`,
           rightLogo: this.rightLogo
         },
-
+        disableClose: true,
         width: '40%',
         maxHeight: '700px',
         autoFocus: false
@@ -311,7 +311,7 @@ getUserVerification(rightInfo: any) {
           },
           gatewayEndpoints: `${environment.baseApiUrl}/3rd-party-services/gateway?id=${this.right.id}&modules=rights`,
         },
-
+        disableClose: true,
         width: '408px',
         // height: '500px'
       });
