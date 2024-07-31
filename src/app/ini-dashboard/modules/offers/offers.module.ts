@@ -9,6 +9,7 @@ import { GatewayPaymentComponent } from './view/gateway-payment/gateway-payment.
 import { RightDetailComponent } from './details/right-detail/right-detail.component';
 import { RightSummaryComponent } from './view/right-summary/right-summary.component';
 import { RightsTransactionComponent } from './details/right-detail/rights-transaction/rights-transaction.component';
+import { OfferTransactionsComponent } from './details/offers-detail/offer-transactions/offer-transactions.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { RightsTransactionComponent } from './details/right-detail/rights-transa
     GatewayPaymentComponent,
     RightDetailComponent,
     RightSummaryComponent,
-    RightsTransactionComponent
+    RightsTransactionComponent,
+    OfferTransactionsComponent
   ]
 })
 export class OffersModule { }

@@ -39,7 +39,7 @@
         </ul>
       </div>
       <div class="text-center stepper-actions pt-4  mb-4 px-2">
-        <button *ngIf="data.showLater" (click)="closeDialog(false)" class="cancel">I will do this later</button>
+        <button (click)="closeDialog(false)" class="cancel">I will do this later</button>
         <button class="submit" matStepperNext>Continue</button>
       </div>
     </mat-step>
