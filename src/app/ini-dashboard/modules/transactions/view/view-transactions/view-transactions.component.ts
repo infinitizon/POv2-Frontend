@@ -146,16 +146,16 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     //    } ))
   }
 
-
+  // .sort((a: any, b: any) => (b > a ? 1 : -1))
   returnImage(image) {
    this.media = image?.filter((item: any) => {
       return item?.type?.name === 'logo'
     });
-    return this.media[0]?.response;
+    return this.media[0]?.response || image[0]?.response;
   }
 
   objectKey(obj: any) {
-    return obj ? Object.keys(obj).sort((a: any, b: any) => (b > a ? 1 : -1)) : null;
+    return obj ? Object.keys(obj) : null;
   }
 
   changePage(value: any): any {

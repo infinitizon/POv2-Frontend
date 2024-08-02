@@ -15,6 +15,7 @@ import { of, switchMap, take } from 'rxjs';
 import { SnackBarComponent } from '@app/_shared/components/snack-bar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '@app/_shared/models/user-model';
+import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-nok',
@@ -39,6 +40,15 @@ export class NokComponent implements OnInit {
 
   mask = '0{1000}';
   customPatterns = { '0': { pattern: new RegExp('\[a-zA-Z\\-&\\s\]')} };
+  separateDialCode = false;
+	SearchCountryField = SearchCountryField;
+	CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
+
+	changePreferredCountries() {
+		this.preferredCountries = [CountryISO.India, CountryISO.Canada];
+	}
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
@@ -61,7 +71,7 @@ export class NokComponent implements OnInit {
       ],
       phone: [
         this.nokData?.length > 0 ? this.nokData[0]?.phone : null,
-        [Validators.required, Validators.maxLength(21)],
+        [Validators.required],
       ],
       email: [
         this.nokData?.length > 0 ? this.nokData[0]?.email : null,
@@ -120,7 +130,6 @@ export class NokComponent implements OnInit {
 
   onSubmit() {
     this.submitting = true;
-      console.log(this.personalForm.controls)
     if (this.personalForm.invalid) {
       this.uiErrors = JSON.parse(JSON.stringify(this.formErrors));
       this.errors = this.commonServices.findInvalidControlsRecursive(
@@ -132,6 +141,7 @@ export class NokComponent implements OnInit {
     }
 
     const fd = JSON.parse(JSON.stringify(this.personalForm.value));
+    fd.phone = fd?.phone?.ie164Number;
     (this.nokData?.length > 0
       ? this.http.put(`${environment.baseApiUrl}/users/next-of-kin/${this.nokData[0]?.id}`, fd)
       : this.http.post(`${environment.baseApiUrl}/users/next-of-kin`, fd)

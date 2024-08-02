@@ -72,7 +72,18 @@
                             appearance="outline"
                             class="w-100"
                           >
-                            <ngx-mat-intl-tel-input
+                          <input
+                          autocomplete="off"
+                          matInput
+                          name="phone"
+                          type="text"
+                          class=""
+                          placeholder=""
+                          mask="9999 999 9999"
+                          formControlName="phone"
+                          (keyup)="controlChanged('phone')"
+                        />
+                            <!-- <ngx-mat-intl-tel-input
                               [inputPlaceholder]="''"
                               [onlyCountries]="['ng']"
                               formControlName="phone"
@@ -81,12 +92,17 @@
                               name="phone"
                               #phone
                             >
-                            </ngx-mat-intl-tel-input>
+                            </ngx-mat-intl-tel-input> -->
                           </mat-form-field>
+                          <!-- <mat-error *ngIf="signupForm.controls['phone']?.errors?.validatePhoneNumber"
+                          >Invalid Number</mat-error
+                        > -->
                           <div class="error-wrapper">
                             <span *ngIf="uiErrors.phone" class="error">{{
                               uiErrors.phone
                             }}</span>
+                            <!-- <span class="error" *ngIf="signupForm.get('phone')?.errors?.['validatePhoneNumber']">Enter a valid phone number.
+                            </span> -->
                           </div>
                         </div>
                       </div>

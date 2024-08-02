@@ -8,7 +8,8 @@ export const ValidationMessages = {
   },
   phone: {
     required: 'Next of kin phone is required',
-    maxlength: 'Maximum of 21 digits',
+    maxlength: 'Maximum of 11 digits',
+    minlength: 'Minimum of 10 digits',
   },
   address: {
     required: 'Next of kin address is required',

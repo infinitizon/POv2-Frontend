@@ -37,6 +37,7 @@ import { OtpDialogComponent } from './dialogs/otp-dialog/otp-dialog.component';
 import { BvnKycComponent } from './dialogs/bvn-kyc/bvn-kyc.component';
 import { ValidateAccountComponent } from './dialogs/validate-account/validate-account.component';
 import { ValidateChnCscsOfferComponent } from './dialogs/validate-chn-cscs-offer/validate-chn-cscs-offer.component';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 
 const MY_DATE_FORMAT = {
@@ -97,6 +98,7 @@ const MY_DATE_FORMAT = {
     FileUploadModule,
     NgxMaskDirective, NgxMaskPipe,
     NgSelectModule,
+    NgxIntlTelInputModule
 
   ],
   exports: [
@@ -134,7 +136,8 @@ const MY_DATE_FORMAT = {
     OtpDialogComponent,
     BvnKycComponent,
     ValidateAccountComponent,
-    ValidateChnCscsOfferComponent
+    ValidateChnCscsOfferComponent,
+    NgxIntlTelInputModule
   ]
 })
 export class SharedModule { }

@@ -29,7 +29,7 @@
             <div class="p-2">
               <div class="image-wrapper">
                 <img
-                  src="{{ trans?.TxnHeader?.commonType === 'rights' ? ( returnImage(trans?.TxnHeader?.Right?.Media) || '/assets/logo/po_logo.png') : (trans?.TxnHeader?.Asset?.Media[0]?.link || '/assets/logo/po_logo.png')  }}"
+                  src="{{ trans?.TxnHeader?.commonType === 'rights' ? ( returnImage(trans?.TxnHeader?.Right?.Media) || '/assets/logo/po_logo.png') : (returnImage(trans?.TxnHeader?.Asset?.Media) || '/assets/logo/po_logo.png')  }}"
                   alt="Offer Logo"
                   height="40"
                   width="40"
@@ -39,7 +39,7 @@
             </div>
             <div class="d-flex align-items-start flex-column ml-4">
               <div class="transactions-desc mb-auto px-4 text-uppercase">
-                <h3>{{trans?.TxnHeader?.commonType === 'rights' ? trans?.TxnHeader?.Right?.Asset?.name : trans?.TxnHeader?.Asset?.name  }}</h3>
+                <h3>{{trans?.TxnHeader?.commonType === 'rights' ? trans?.TxnHeader?.Right?.name : trans?.TxnHeader?.Asset?.name  }}</h3>
               </div>
               <div
                 class="transactions-status mx-4"
