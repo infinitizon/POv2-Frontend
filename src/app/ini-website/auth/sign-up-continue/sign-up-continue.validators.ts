@@ -11,6 +11,7 @@ export const ValidationMessages = {
   },
   phone: {
     required: 'Phone number is required',
+    minlength: 'Phone Number must be at least 11 digits',
   },
   password: {
     required: 'Password is required',

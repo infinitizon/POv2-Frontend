@@ -58,7 +58,7 @@ export class SignUpContinueComponent implements OnInit, OnDestroy {
         address: ['', [Validators.required]],
         gender: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.pattern(this.commonServices.email)]],
-        phone: ['', [Validators.required]],
+        phone: ['', [Validators.required, Validators.minLength(11)]],
         password: [
           '',
           [
@@ -175,6 +175,8 @@ export class SignUpContinueComponent implements OnInit, OnDestroy {
     }
     const fd = JSON.parse(JSON.stringify(this.signupForm.value));
     fd.gender = fd.gender.id;
+    fd.phone = '+234' + fd.phone.replace(/^0+/, '');
+
 
     const encrypted = new Crypto({
       aesKey: environment.SECRET_KEY,

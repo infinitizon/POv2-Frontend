@@ -27,6 +27,7 @@
                   [validation]="false"
                   [patterns]="customPatterns"
                   [dropSpecialCharacters]="true"
+
                   (input)="controlChanged('name')"
                 />
               </mat-form-field>
@@ -100,6 +101,24 @@
             >
             <div class="input mt-1">
               <mat-form-field appearance="outline" class="col-md-12 w-100">
+                <!-- <ngx-intl-tel-input
+                [cssClass]="'custom'"
+                [preferredCountries]="[]"
+                [enableAutoCountrySelect]="false"
+                [enablePlaceholder]="true"
+                [searchCountryFlag]="false"
+                [searchCountryField]="[]"
+                [selectFirstCountry]="false"
+                [selectedCountryISO]="CountryISO.Nigeria"
+                [maxLength]="10"
+                [phoneValidation]="true"
+                [onlyCountries]="[CountryISO.Nigeria]"
+                [separateDialCode]="true"
+                [numberFormat]="PhoneNumberFormat.National"
+                name="phone"
+                formControlName="phone"
+              ></ngx-intl-tel-input> -->
+
                 <ngx-mat-intl-tel-input
                   [onlyCountries]="['ng']"
                   formControlName="phone"
@@ -115,6 +134,8 @@
                 <span class="error" *ngIf="uiErrors.phone != ''">{{
                   uiErrors.phone
                 }}</span>
+                <span class="error" *ngIf="personalForm.get('phone')?.errors?.['validatePhoneNumber']">Enter a valid phone number.
+                </span>
               </div>
             </div>
           </div>
