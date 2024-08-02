@@ -15,7 +15,7 @@ import { of, switchMap, take } from 'rxjs';
 import { SnackBarComponent } from '@app/_shared/components/snack-bar/snack-bar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '@app/_shared/models/user-model';
-import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
+// import { CountryISO, PhoneNumberFormat, SearchCountryField } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-nok',
@@ -40,15 +40,15 @@ export class NokComponent implements OnInit {
 
   mask = '0{1000}';
   customPatterns = { '0': { pattern: new RegExp('\[a-zA-Z\\-&\\s\]')} };
-  separateDialCode = false;
-	SearchCountryField = SearchCountryField;
-	CountryISO = CountryISO;
-  PhoneNumberFormat = PhoneNumberFormat;
-	preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
+  // separateDialCode = false;
+	// SearchCountryField = SearchCountryField;
+	// CountryISO = CountryISO;
+  // PhoneNumberFormat = PhoneNumberFormat;
+	// preferredCountries: CountryISO[] = [CountryISO.UnitedStates, CountryISO.UnitedKingdom];
 
-	changePreferredCountries() {
-		this.preferredCountries = [CountryISO.India, CountryISO.Canada];
-	}
+	// changePreferredCountries() {
+	// 	this.preferredCountries = [CountryISO.India, CountryISO.Canada];
+	// }
   constructor(
     private fb: FormBuilder,
     private commonServices: CommonService,
