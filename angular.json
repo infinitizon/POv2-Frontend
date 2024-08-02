@@ -32,7 +32,6 @@
               "src/_redirects"
             ],
             "styles": [
-              "./node_modules/intl-tel-input/build/css/intlTelInput.css",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.scss"
             ],
