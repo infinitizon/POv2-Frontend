@@ -89,7 +89,7 @@ export class RightGatewayComponent implements OnInit {
     });
 
     if (this.data?.rightEntitled?.data?.data?.status === 'NEW') {
-      this.purchaseOptionsData = ['Full', 'Partial', 'Additional'];
+      this.purchaseOptionsData = ['Full', 'Partial'];
     } else if (
       this.data?.rightEntitled?.data?.data?.status === 'REQUEST_OVERAGE'
     ) {
@@ -98,12 +98,12 @@ export class RightGatewayComponent implements OnInit {
       this.getInvestor();
     }
 
-    this.gatewayForm.get('purchaseOption').valueChanges.subscribe((data) => {
-               if(data === 'Additional') {
-                this.getBrokerId = this.data?.rightEntitled?.data?.data?.brokerId;
-                this.getInvestor();
-               }
-    });
+    // this.gatewayForm.get('purchaseOption').valueChanges.subscribe((data) => {
+    //            if(data === 'Additional') {
+    //             this.getBrokerId = this.data?.rightEntitled?.data?.data?.brokerId;
+    //             this.getInvestor();
+    //            }
+    // });
 
     // if (!this.data?.rightEntitled?.data?.data?.brokerId) {
     //       this.getBrokerList();
@@ -180,7 +180,7 @@ export class RightGatewayComponent implements OnInit {
       this.gatewayForm.get('rightEntitled').updateValueAndValidity();
       this.gatewayForm.get('additional').patchValue('');
     } else if (this.gatewayForm.get('purchaseOption')?.value === 'Additional') {
-      // if (this.data?.rightEntitled?.data?.data?.status === 'REQUEST_OVERAGE') {
+      if (this.data?.rightEntitled?.data?.data?.status === 'REQUEST_OVERAGE') {
         this.gatewayForm
           .get('additional')
           .setValidators([
@@ -191,7 +191,7 @@ export class RightGatewayComponent implements OnInit {
             //   { checkBy: '' }
             // ),
           ]);
-      // }
+      }
       this.gatewayForm.get('unit').patchValue('');
       this.gatewayForm.get('additional').updateValueAndValidity();
       this.gatewayForm.get('rightEntitled').clearValidators();
