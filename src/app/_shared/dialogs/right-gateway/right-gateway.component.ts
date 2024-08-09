@@ -49,6 +49,8 @@ export class RightGatewayComponent implements OnInit {
   userInformation: any;
   brokerList: any;
 
+  showTopUp: boolean = false;
+
   constructor(
     public commonServices: CommonService,
     public appContext: ApplicationContextService,
@@ -88,14 +90,24 @@ export class RightGatewayComponent implements OnInit {
       terms: [false],
     });
 
+    // C0478393ME
+
     if (this.data?.rightEntitled?.data?.data?.status === 'NEW') {
-      this.purchaseOptionsData = ['Full', 'Partial'];
+      if(this.data?.rightEntitled?.data?.data?.maximumUnitBuyable === 0) {
+        this.showTopUp = true;
+        this.gatewayForm.get('purchaseOption').patchValue('Additional');
+        this.checkedForPartial();
+      } else {
+        this.purchaseOptionsData = ['Full', 'Partial'];
+        this.showTopUp = false;
+      }
     } else if (
       this.data?.rightEntitled?.data?.data?.status === 'REQUEST_OVERAGE'
     ) {
       this.purchaseOptionsData = ['Additional'];
       this.getBrokerId = this.data?.rightEntitled?.data?.data?.brokerId;
       this.getInvestor();
+      this.showTopUp = false;
     }
 
     // this.gatewayForm.get('purchaseOption').valueChanges.subscribe((data) => {
@@ -236,7 +248,7 @@ export class RightGatewayComponent implements OnInit {
 
     const fd = JSON.parse(JSON.stringify(this.gatewayForm.value));
 
-    if (!this.getInvestorId && fd.purchaseOption === 'Additional') {
+    if (!this.getInvestorId && fd.purchaseOption === 'Additional' && !this.showTopUp) {
       this.openSnackBar('Investor ID not available ');
       return;
     }

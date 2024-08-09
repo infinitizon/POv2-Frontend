@@ -13,7 +13,7 @@
   <div class="gateway-content mt-4">
     <form [formGroup]="gatewayForm" [autocomplete]="'off'">
 
-      <div class="form-group" >
+      <div class="form-group" *ngIf="!showTopUp" >
         <label
           ><div class="gateway-label d-flex justify-content-between">
             <div>{{data?.rightEntitled?.data?.data?.status === "REQUEST_OVERAGE" ? 'Maximum Available to Buy' :'Available rights to buy'}}</div>
@@ -45,7 +45,7 @@
       </div>
 
 
-      <div class="form-group mt-3">
+      <div class="form-group mt-3" *ngIf="!showTopUp">
         <label>Purchase option</label>
         <div class="input mt-1 ">
           <mat-form-field appearance="outline" class="col-md-12 w-100">
@@ -119,7 +119,7 @@
         </div>
       </div> -->
 
-      <div class="form-group mt-3" *ngIf="gatewayForm.get('purchaseOption')?.value === 'Partial'" >
+      <div class="form-group mt-3" *ngIf="gatewayForm.get('purchaseOption')?.value === 'Partial' && !showTopUp" >
         <label
           ><div class="gateway-label">
             <!-- <div>Number of ordinary shares accepted</div> -->
